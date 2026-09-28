@@ -1,0 +1,2948 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>iType — Typing Studio</title>
+
+<style>
+:root{
+  --bg:#090b10;
+  --bg2:#0f1219;
+  --card:rgba(19,23,32,.82);
+  --card2:#151a24;
+  --text:#f2f5f8;
+  --muted:#727b8c;
+  --accent:#6ee7ff;
+  --accent2:#8b5cf6;
+  --good:#65e6a4;
+  --bad:#ff647c;
+  --key:#181e29;
+  --key-hover:#222a38;
+  --border:rgba(255,255,255,.08);
+  --shadow:0 25px 80px rgba(0,0,0,.35);
+  --radius:18px;
+}
+
+*{box-sizing:border-box}
+
+html,body{
+  margin:0;
+  min-height:100%;
+}
+
+body{
+  background:
+    radial-gradient(circle at 10% 0%,rgba(110,231,255,.09),transparent 30%),
+    radial-gradient(circle at 90% 10%,rgba(139,92,246,.11),transparent 32%),
+    var(--bg);
+  color:var(--text);
+  font-family:Inter,Segoe UI,Arial,sans-serif;
+  overflow-x:hidden;
+}
+
+button,input,textarea,select{font:inherit}
+
+button{
+  cursor:pointer;
+  border:0;
+}
+
+.app{
+  width:min(1280px,94%);
+  margin:auto;
+  padding:25px 0 60px;
+}
+
+/* HEADER */
+
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+  margin-bottom:30px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.logo{
+  font-size:32px;
+  font-weight:900;
+  letter-spacing:-1.5px;
+}
+
+.logo i{
+  font-style:normal;
+  color:var(--accent);
+}
+
+.badge{
+  padding:5px 9px;
+  border:1px solid var(--border);
+  border-radius:999px;
+  color:var(--muted);
+  font-size:10px;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  background:rgba(255,255,255,.03);
+}
+
+.nav{
+  display:flex;
+  gap:7px;
+}
+
+.nav button{
+  color:var(--muted);
+  background:transparent;
+  padding:10px 13px;
+  border-radius:10px;
+}
+
+.nav button:hover{
+  color:var(--text);
+  background:rgba(255,255,255,.06);
+}
+
+/* HERO */
+
+.hero{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:20px;
+  margin-bottom:22px;
+}
+
+.hero-title{
+  font-size:15px;
+  color:var(--muted);
+}
+
+.hero-title strong{
+  color:var(--text);
+  font-size:18px;
+}
+
+.quick{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.pill{
+  background:var(--card);
+  border:1px solid var(--border);
+  color:var(--muted);
+  border-radius:999px;
+  padding:8px 12px;
+  font-size:12px;
+}
+
+/* CONTROL CARD */
+
+.controls{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  padding:12px;
+  background:var(--card);
+  border:1px solid var(--border);
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(18px);
+  border-radius:16px;
+  margin-bottom:20px;
+}
+
+.group{
+  display:flex;
+  align-items:center;
+  gap:4px;
+  padding:4px;
+  background:rgba(255,255,255,.025);
+  border-radius:11px;
+}
+
+.group-label{
+  color:var(--muted);
+  font-size:11px;
+  padding:0 7px;
+  text-transform:uppercase;
+  letter-spacing:.7px;
+}
+
+.control{
+  background:transparent;
+  color:var(--muted);
+  padding:8px 11px;
+  border-radius:8px;
+  font-size:13px;
+}
+
+.control:hover{
+  color:var(--text);
+}
+
+.control.active{
+  color:#071018;
+  background:var(--accent);
+  box-shadow:0 5px 20px rgba(110,231,255,.18);
+}
+
+/* STATS */
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin-bottom:15px;
+}
+
+.stat{
+  padding:17px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  box-shadow:var(--shadow);
+}
+
+.stat-value{
+  font-size:28px;
+  font-weight:800;
+  letter-spacing:-1px;
+}
+
+.stat-value.accent{color:var(--accent)}
+.stat-value.good{color:var(--good)}
+.stat-value.bad{color:var(--bad)}
+
+.stat-label{
+  margin-top:4px;
+  color:var(--muted);
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+
+/* TEST CARD */
+
+.test-card{
+  position:relative;
+  padding:34px;
+  min-height:250px;
+  background:
+    linear-gradient(135deg,rgba(255,255,255,.025),rgba(255,255,255,.005)),
+    var(--card);
+  border:1px solid var(--border);
+  border-radius:22px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  cursor:text;
+}
+
+.test-card:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(120deg,rgba(110,231,255,.035),transparent 40%,rgba(139,92,246,.035));
+  pointer-events:none;
+}
+
+.typing-text{
+  position:relative;
+  z-index:2;
+  font-family:"JetBrains Mono","Cascadia Mono",Consolas,monospace;
+  font-size:27px;
+  line-height:1.75;
+  letter-spacing:.25px;
+  color:var(--muted);
+  word-break:break-word;
+  user-select:none;
+}
+
+.char{
+  position:relative;
+}
+
+.char.correct{
+  color:var(--text);
+}
+
+.char.wrong{
+  color:var(--bad);
+}
+
+.char.current{
+  color:var(--text);
+}
+
+.char.current:after{
+  content:"";
+  position:absolute;
+  left:0;
+  top:4px;
+  bottom:4px;
+  width:2px;
+  background:var(--accent);
+  box-shadow:0 0 12px var(--accent);
+  animation:cursor .8s infinite;
+}
+
+@keyframes cursor{
+  50%{opacity:.15}
+}
+
+.hidden{
+  position:absolute;
+  width:1px;
+  height:1px;
+  opacity:0;
+  left:-100px;
+  top:-100px;
+}
+
+/* PROGRESS */
+
+.progress{
+  height:3px;
+  background:rgba(255,255,255,.05);
+  margin-top:18px;
+  border-radius:10px;
+  overflow:hidden;
+}
+
+.progress i{
+  display:block;
+  height:100%;
+  width:0;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  transition:width .12s linear;
+}
+
+/* STATUS */
+
+.status{
+  min-height:25px;
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
+  padding:12px 0 2px;
+}
+
+/* KEYBOARD */
+
+.keyboard{
+  margin:23px auto 0;
+  max-width:1000px;
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+
+.key-row{
+  display:flex;
+  justify-content:center;
+  gap:6px;
+}
+
+.key{
+  height:48px;
+  min-width:51px;
+  padding:0 12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--muted);
+  background:linear-gradient(145deg,var(--key-hover),var(--key));
+  border:1px solid var(--border);
+  border-radius:9px;
+  font-family:Consolas,monospace;
+  font-size:13px;
+  transition:.06s;
+  box-shadow:0 5px 15px rgba(0,0,0,.15);
+}
+
+.key:hover{
+  color:var(--text);
+  transform:translateY(-1px);
+}
+
+.key.pressed{
+  color:#061016;
+  background:var(--accent);
+  transform:translateY(2px);
+  box-shadow:0 0 22px rgba(110,231,255,.25);
+}
+
+.key.wide{min-width:82px}
+.key.space{width:390px}
+
+/* ACTIONS */
+
+.actions{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:9px;
+  margin-top:22px;
+}
+
+.action{
+  padding:11px 16px;
+  border-radius:10px;
+  color:var(--muted);
+  background:var(--card);
+  border:1px solid var(--border);
+}
+
+.action:hover{
+  color:var(--text);
+  border-color:rgba(110,231,255,.25);
+}
+
+.action.primary{
+  color:#061016;
+  background:var(--accent);
+}
+
+/* OVERLAY */
+
+.overlay{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(0,0,0,.72);
+  backdrop-filter:blur(12px);
+}
+
+.overlay.show{
+  display:flex;
+}
+
+.modal{
+  width:min(680px,100%);
+  max-height:90vh;
+  overflow:auto;
+  background:#11151d;
+  border:1px solid var(--border);
+  border-radius:22px;
+  padding:25px;
+  box-shadow:0 30px 100px rgba(0,0,0,.55);
+}
+
+.modal h2{
+  margin:0 0 20px;
+}
+
+.modal-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+
+.close{
+  color:var(--muted);
+  background:transparent;
+  font-size:22px;
+}
+
+/* RESULT */
+
+.result-main{
+  text-align:center;
+  padding:10px 0 20px;
+}
+
+.big-wpm{
+  font-size:76px;
+  line-height:1;
+  font-weight:900;
+  color:var(--accent);
+  letter-spacing:-4px;
+}
+
+.big-label{
+  color:var(--muted);
+  text-transform:uppercase;
+  font-size:11px;
+  letter-spacing:2px;
+}
+
+.result-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+
+.result-item{
+  text-align:center;
+  padding:16px;
+  background:rgba(255,255,255,.035);
+  border:1px solid var(--border);
+  border-radius:13px;
+}
+
+.result-item b{
+  display:block;
+  font-size:23px;
+  margin-bottom:4px;
+}
+
+.result-item span{
+  color:var(--muted);
+  font-size:10px;
+  text-transform:uppercase;
+}
+
+/* SETTINGS */
+
+.setting{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  padding:15px 0;
+  border-bottom:1px solid var(--border);
+}
+
+.setting-title{
+  font-size:14px;
+}
+
+.setting-desc{
+  color:var(--muted);
+  font-size:11px;
+  margin-top:3px;
+}
+
+select,
+input[type=range],
+input[type=text],
+textarea{
+  background:#0b0f15;
+  color:var(--text);
+  border:1px solid var(--border);
+  border-radius:9px;
+}
+
+select,
+input[type=text]{
+  padding:9px 11px;
+}
+
+input[type=range]{
+  accent-color:var(--accent);
+}
+
+textarea{
+  width:100%;
+  min-height:180px;
+  padding:12px;
+  resize:vertical;
+  outline:none;
+}
+
+.field{
+  margin-bottom:13px;
+}
+
+.field label{
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+  margin-bottom:6px;
+  text-transform:uppercase;
+}
+
+.field input[type=text]{
+  width:100%;
+}
+
+/* CUSTOM */
+
+.saved{
+  margin-top:18px;
+}
+
+.saved-item{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:center;
+  padding:11px;
+  margin-top:7px;
+  background:rgba(255,255,255,.035);
+  border:1px solid var(--border);
+  border-radius:10px;
+}
+
+.saved-item small{
+  color:var(--muted);
+}
+
+.saved-actions{
+  display:flex;
+  gap:5px;
+}
+
+.small{
+  padding:7px 9px;
+  color:var(--muted);
+  background:rgba(255,255,255,.06);
+  border-radius:7px;
+}
+
+.small.delete{
+  color:var(--bad);
+}
+
+/* HISTORY */
+
+.history-row{
+  display:grid;
+  grid-template-columns:1.5fr 1fr 1fr 1fr;
+  gap:8px;
+  padding:11px 0;
+  border-bottom:1px solid var(--border);
+  color:var(--muted);
+  font-size:12px;
+}
+
+.history-row b{
+  color:var(--text);
+}
+
+/* RESPONSIVE */
+
+@media(max-width:800px){
+
+  .hero{
+    grid-template-columns:1fr;
+  }
+
+  .stats{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .typing-text{
+    font-size:21px;
+  }
+
+  .test-card{
+    padding:22px;
+  }
+
+  .key{
+    min-width:31px;
+    height:41px;
+    padding:0 6px;
+    font-size:11px;
+  }
+
+  .key.wide{
+    min-width:55px;
+  }
+
+  .key.space{
+    width:230px;
+  }
+
+}
+
+@media(max-width:520px){
+
+  .app{
+    width:96%;
+  }
+
+  .header{
+    align-items:flex-start;
+  }
+
+  .nav{
+    flex-wrap:wrap;
+  }
+
+  .logo{
+    font-size:27px;
+  }
+
+  .stats{
+    gap:8px;
+  }
+
+  .stat{
+    padding:13px;
+  }
+
+  .stat-value{
+    font-size:22px;
+  }
+
+  .typing-text{
+    font-size:18px;
+    line-height:1.8;
+  }
+
+  .keyboard{
+    transform:scale(.76);
+    transform-origin:top center;
+    width:132%;
+    margin-left:-16%;
+    margin-bottom:-55px;
+  }
+
+  .result-grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .setting{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header class="header">
+
+  <div class="brand">
+    <div class="logo">i<i>Type</i></div>
+    <div class="badge">Typing Studio</div>
+  </div>
+
+  <nav class="nav">
+    <button onclick="openHistory()">History</button>
+    <button onclick="openCustom()">Custom</button>
+    <button onclick="openSettings()">⚙ Settings</button>
+  </nav>
+
+</header>
+
+<section class="hero">
+
+  <div class="hero-title">
+    <strong>Train your fingers. Build your speed.</strong><br>
+    Type naturally, accurately and without looking at the keyboard.
+  </div>
+
+  <div class="quick">
+    <div class="pill" id="voicePill">🔇 Voice Off</div>
+    <div class="pill" id="langPill">EN</div>
+  </div>
+
+</section>
+
+<!-- CONTROLS -->
+
+<div class="controls">
+
+  <div class="group">
+    <span class="group-label">Mode</span>
+    <button class="control active" data-mode="time">Time</button>
+    <button class="control" data-mode="words">Words</button>
+    <button class="control" data-mode="custom">Custom</button>
+  </div>
+
+  <div class="group" id="timeGroup">
+    <span class="group-label">Time</span>
+    <button class="control active" data-time="30">30s</button>
+    <button class="control" data-time="60">60s</button>
+    <button class="control" data-time="120">120s</button>
+  </div>
+
+  <div class="group" id="wordsGroup" style="display:none">
+    <span class="group-label">Words</span>
+    <button class="control active" data-words="25">25</button>
+    <button class="control" data-words="50">50</button>
+    <button class="control" data-words="100">100</button>
+  </div>
+
+  <div class="group">
+    <span class="group-label">Language</span>
+    <button class="control active" data-lang="en-US">EN</button>
+    <button class="control" data-lang="uz-UZ">UZ</button>
+    <button class="control" data-lang="ru-RU">RU</button>
+    <button class="control" data-lang="de-DE">DE</button>
+    <button class="control" data-lang="es-ES">ES</button>
+    <button class="control" data-lang="fr-FR">FR</button>
+  </div>
+
+</div>
+
+<!-- STATS -->
+
+<div class="stats">
+
+  <div class="stat">
+    <div class="stat-value accent" id="wpm">0</div>
+    <div class="stat-label">WPM</div>
+  </div>
+
+  <div class="stat">
+    <div class="stat-value good" id="accuracy">100%</div>
+    <div class="stat-label">Accuracy</div>
+  </div>
+
+  <div class="stat">
+    <div class="stat-value" id="timer">30</div>
+    <div class="stat-label">Time</div>
+  </div>
+
+  <div class="stat">
+    <div class="stat-value bad" id="errors">0</div>
+    <div class="stat-label">Errors</div>
+  </div>
+
+</div>
+
+<!-- TEST -->
+
+<div class="test-card" id="testCard">
+
+  <div class="typing-text" id="typingText"></div>
+
+  <input
+    id="input"
+    class="hidden"
+    autocomplete="off"
+    autocorrect="off"
+    autocapitalize="off"
+    spellcheck="false"
+  >
+
+  <div class="progress">
+    <i id="progress"></i>
+  </div>
+
+</div>
+
+<div class="status" id="status">
+  Click the text and start typing
+</div>
+
+<!-- KEYBOARD -->
+
+<div class="keyboard" id="keyboard">
+
+  <div class="key-row">
+    <div class="key" data-key="q">Q</div>
+    <div class="key" data-key="w">W</div>
+    <div class="key" data-key="e">E</div>
+    <div class="key" data-key="r">R</div>
+    <div class="key" data-key="t">T</div>
+    <div class="key" data-key="y">Y</div>
+    <div class="key" data-key="u">U</div>
+    <div class="key" data-key="i">I</div>
+    <div class="key" data-key="o">O</div>
+    <div class="key" data-key="p">P</div>
+  </div>
+
+  <div class="key-row">
+    <div class="key" data-key="a">A</div>
+    <div class="key" data-key="s">S</div>
+    <div class="key" data-key="d">D</div>
+    <div class="key" data-key="f">F</div>
+    <div class="key" data-key="g">G</div>
+    <div class="key" data-key="h">H</div>
+    <div class="key" data-key="j">J</div>
+    <div class="key" data-key="k">K</div>
+    <div class="key" data-key="l">L</div>
+  </div>
+
+  <div class="key-row">
+    <div class="key wide" data-key="shift">SHIFT</div>
+    <div class="key" data-key="z">Z</div>
+    <div class="key" data-key="x">X</div>
+    <div class="key" data-key="c">C</div>
+    <div class="key" data-key="v">V</div>
+    <div class="key" data-key="b">B</div>
+    <div class="key" data-key="n">N</div>
+    <div class="key" data-key="m">M</div>
+    <div class="key wide" data-key="backspace">⌫</div>
+  </div>
+
+  <div class="key-row">
+    <div class="key wide" data-key="ctrl">CTRL</div>
+    <div class="key space" data-key=" ">SPACE</div>
+    <div class="key wide" data-key="enter">ENTER</div>
+  </div>
+
+</div>
+
+<!-- ACTIONS -->
+
+<div class="actions">
+
+  <button class="action primary" id="restart">
+    ↻ Restart
+  </button>
+
+  <button class="action" id="voice">
+    🔊 Voice: Off
+  </button>
+
+  <button class="action" id="keyboardToggle">
+    ⌨ Keyboard
+  </button>
+
+</div>
+
+</div>
+
+
+<!-- RESULT -->
+
+<div class="overlay" id="resultOverlay">
+
+  <div class="modal">
+
+    <div class="result-main">
+
+      <div class="big-wpm" id="resultWpm">0</div>
+
+      <div class="big-label">
+        Words Per Minute
+      </div>
+
+    </div>
+
+    <div class="result-grid">
+
+      <div class="result-item">
+        <b id="resultAccuracy">100%</b>
+        <span>Accuracy</span>
+      </div>
+
+      <div class="result-item">
+        <b id="resultCorrect">0</b>
+        <span>Correct</span>
+      </div>
+
+      <div class="result-item">
+        <b id="resultErrors">0</b>
+        <span>Errors</span>
+      </div>
+
+    </div>
+
+    <div class="actions">
+
+      <button class="action primary" id="retry">
+        ↻ Try Again
+      </button>
+
+      <button class="action" onclick="closeModal('resultOverlay')">
+        Close
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- SETTINGS -->
+
+<div class="overlay" id="settingsOverlay">
+
+  <div class="modal">
+
+    <div class="modal-head">
+      <h2>Settings</h2>
+      <button class="close" onclick="closeModal('settingsOverlay')">×</button>
+    </div>
+
+    <div class="setting">
+
+      <div>
+        <div class="setting-title">Voice Training</div>
+        <div class="setting-desc">
+          Read each word before you type it.
+        </div>
+      </div>
+
+      <button class="action" id="voiceSettingsBtn">
+        Voice
+      </button>
+
+    </div>
+
+    <div class="setting">
+
+      <div>
+        <div class="setting-title">Voice</div>
+        <div class="setting-desc">
+          Browser voice
+        </div>
+      </div>
+
+      <select id="voiceSelect">
+        <option>Loading...</option>
+      </select>
+
+    </div>
+
+    <div class="setting">
+
+      <div>
+        <div class="setting-title">Voice Speed</div>
+        <div class="setting-desc">
+          Speech speed
+        </div>
+      </div>
+
+      <input id="voiceRate" type="range"
+        min=".5" max="1.5" step=".05" value="1">
+
+    </div>
+
+    <div class="setting">
+
+      <div>
+        <div class="setting-title">Volume</div>
+        <div class="setting-desc">
+          Voice volume
+        </div>
+      </div>
+
+      <input id="voiceVolume" type="range"
+        min="0" max="1" step=".05" value="1">
+
+    </div>
+
+    <div class="setting">
+
+      <div>
+        <div class="setting-title">Theme</div>
+        <div class="setting-desc">
+          Change iType appearance.
+        </div>
+      </div>
+
+      <select id="themeSelect">
+        <option value="cyan">Cyan</option>
+        <option value="purple">Purple</option>
+        <option value="green">Green</option>
+        <option value="orange">Orange</option>
+        <option value="light">Light</option>
+      </select>
+
+    </div>
+
+    <div class="setting">
+
+      <div>
+        <div class="setting-title">Text Size</div>
+        <div class="setting-desc">
+          Typing text size.
+        </div>
+      </div>
+
+      <input id="fontSize" type="range"
+        min="18" max="40" value="27">
+
+    </div>
+
+    <div class="actions">
+      <button class="action primary"
+        onclick="closeModal('settingsOverlay')">
+        Done
+      </button>
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- CUSTOM -->
+
+<div class="overlay" id="customOverlay">
+
+  <div class="modal">
+
+    <div class="modal-head">
+      <h2>Custom Text</h2>
+      <button class="close" onclick="closeModal('customOverlay')">×</button>
+    </div>
+
+    <div class="field">
+      <label>Name</label>
+      <input id="customName" type="text"
+        placeholder="My text">
+    </div>
+
+    <div class="field">
+      <label>Text</label>
+      <textarea id="customInput"
+        placeholder="Write your own typing text..."></textarea>
+    </div>
+
+    <button class="action primary"
+      onclick="saveCustom()">
+      Save Text
+    </button>
+
+    <div class="saved" id="savedTexts"></div>
+
+  </div>
+
+</div>
+
+
+<!-- HISTORY -->
+
+<div class="overlay" id="historyOverlay">
+
+  <div class="modal">
+
+    <div class="modal-head">
+      <h2>History</h2>
+      <button class="close" onclick="closeModal('historyOverlay')">×</button>
+    </div>
+
+    <div id="historyList"></div>
+
+    <div class="actions">
+      <button class="action"
+        onclick="clearHistory()">
+        Clear History
+      </button>
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   iTYPE ENGINE
+   ========================================================= */
+
+const $ = id => document.getElementById(id);
+
+let mode = "time";
+let duration = 30;
+let wordLimit = 25;
+let language = "en-US";
+
+let sourceText = "";
+let chars = [];
+let position = 0;
+
+let started = false;
+let finished = false;
+
+let startTime = 0;
+let elapsed = 0;
+let timerId = null;
+
+let correct = 0;
+let errors = 0;
+
+let voiceEnabled =
+  localStorage.getItem("itype_voice") === "true";
+
+let voiceRate =
+  Number(localStorage.getItem("itype_voice_rate")) || 1;
+
+let voiceVolume =
+  Number(localStorage.getItem("itype_voice_volume")) || 1;
+
+let voices = [];
+let selectedVoice = null;
+
+
+/* =========================================================
+   TEXT
+   ========================================================= */
+
+const texts = {
+
+"en-US":`
+The quick brown fox jumps over the lazy dog.
+Learning to type without looking at the keyboard takes patience and practice.
+Small improvements every day can create impressive results over time.
+Good typing is not only about speed but also about accuracy and control.
+Technology gives people powerful tools for learning, communication and creativity.
+Stay focused, keep your hands relaxed and let your fingers learn the keyboard.
+`,
+
+"uz-UZ":`
+Tez va aniq yozish uchun muntazam mashq qilish kerak.
+Klaviaturaga qaramasdan yozishni o'rganish vaqt va sabr talab qiladi.
+Har kuni kichik mashqlar katta natijalarga olib keladi.
+Yaxshi yozish faqat tezlik emas, balki aniqlik va nazorat hamdir.
+Texnologiya odamlar uchun o'rganish va muloqot qilish imkoniyatlarini yaratadi.
+Diqqatni jamlang va har kuni mashq qilishni davom ettiring.
+`,
+
+"ru-RU":`
+Быстрая и точная печать требует регулярной практики.
+Умение печатать не глядя на клавиатуру экономит время.
+Каждая небольшая тренировка помогает улучшить результат.
+Хорошая печать зависит не только от скорости, но и от точности.
+Технологии дают людям новые возможности для обучения и общения.
+Сосредоточьтесь и продолжайте тренироваться каждый день.
+`,
+
+"de-DE":`
+Schnelles und genaues Tippen braucht regelmäßiges Training.
+Wer ohne Blick auf die Tastatur schreiben kann, spart viel Zeit.
+Jede kleine Übung kann das Ergebnis verbessern.
+Gutes Tippen bedeutet nicht nur Geschwindigkeit, sondern auch Genauigkeit.
+Technologie bietet viele Möglichkeiten zum Lernen und Kommunizieren.
+Bleib konzentriert und übe jeden Tag.
+`,
+
+"es-ES":`
+Escribir rápido y con precisión requiere práctica constante.
+Aprender a escribir sin mirar el teclado ahorra mucho tiempo.
+Cada pequeña sesión puede mejorar tus resultados.
+Escribir bien no significa solamente velocidad, sino también precisión.
+La tecnología ofrece nuevas oportunidades para aprender y comunicarse.
+Mantén la concentración y practica todos los días.
+`,
+
+"fr-FR":`
+Écrire rapidement et avec précision demande une pratique régulière.
+Savoir écrire sans regarder le clavier permet de gagner du temps.
+Chaque petite séance peut améliorer les résultats.
+Bien écrire ne signifie pas seulement aller vite, mais aussi être précis.
+La technologie offre de nombreuses possibilités pour apprendre.
+Reste concentré et entraîne-toi chaque jour.
+`
+
+};
+
+
+/* =========================================================
+   PREPARE TEXT
+   ========================================================= */
+
+function createText(){
+
+  let text = texts[language] || texts["en-US"];
+
+  text = text.replace(/\s+/g," ").trim();
+
+  if(mode === "custom"){
+    return sourceText.trim();
+  }
+
+  if(mode === "words"){
+
+    const words = text.split(" ");
+    const result = [];
+
+    for(let i=0;i<wordLimit;i++){
+      result.push(words[i % words.length]);
+    }
+
+    return result.join(" ");
+  }
+
+  let output = "";
+
+  while(output.length < 1200){
+    output += " " + text;
+  }
+
+  return output.trim();
+
+}
+
+
+function prepare(){
+
+  stopTimer();
+
+  started = false;
+  finished = false;
+
+  position = 0;
+  elapsed = 0;
+  correct = 0;
+  errors = 0;
+
+  sourceText = mode === "custom"
+    ? sourceText
+    : createText();
+
+  chars = [...sourceText];
+
+  render();
+
+  $("wpm").textContent = "0";
+  $("accuracy").textContent = "100%";
+  $("errors").textContent = "0";
+
+  $("timer").textContent =
+    mode === "time"
+      ? duration
+      : "0";
+
+  $("progress").style.width = "0%";
+
+  $("status").textContent =
+    voiceEnabled
+      ? "Voice Training ready — type the spoken word"
+      : "Click the text and start typing";
+
+  $("input").value = "";
+
+}
+
+
+/* =========================================================
+   RENDER
+   ========================================================= */
+
+function render(){
+
+  const box =
+    $("typingText");
+
+  box.innerHTML = "";
+
+  chars.forEach((char,index)=>{
+
+    const span =
+      document.createElement("span");
+
+    span.className = "char";
+
+    span.dataset.index = index;
+
+    span.textContent =
+      char === " "
+        ? "\u00A0"
+        : char;
+
+    box.appendChild(span);
+
+  });
+
+  updateDisplay();
+
+}
+
+
+function updateDisplay(){
+
+  const children =
+    $("typingText").children;
+
+  for(let i=0;i<children.length;i++){
+
+    const el = children[i];
+
+    el.classList.remove(
+      "correct",
+      "wrong",
+      "current"
+    );
+
+    if(i < position){
+
+      if(el.dataset.result === "correct"){
+        el.classList.add("correct");
+      }else{
+        el.classList.add("wrong");
+      }
+
+    }
+
+    if(i === position){
+      el.classList.add("current");
+    }
+
+  }
+
+}
+
+
+/* =========================================================
+   START
+   ========================================================= */
+
+function start(){
+
+  if(started || finished) return;
+
+  started = true;
+  startTime = Date.now();
+
+  $("status").textContent =
+    voiceEnabled
+      ? "Listen → type the word correctly → continue"
+      : "Typing...";
+
+  timerId =
+    setInterval(tick,100);
+
+  if(voiceEnabled){
+
+    setTimeout(()=>{
+      speakCurrentWord();
+    },120);
+
+  }
+
+}
+
+
+/* =========================================================
+   TIMER
+   ========================================================= */
+
+function tick(){
+
+  if(!started || finished) return;
+
+  elapsed =
+    (Date.now()-startTime)/1000;
+
+  if(mode === "time"){
+
+    const remaining =
+      Math.max(
+        0,
+        duration-elapsed
+      );
+
+    $("timer").textContent =
+      Math.ceil(remaining);
+
+    $("progress").style.width =
+      Math.min(
+        100,
+        elapsed/duration*100
+      ) + "%";
+
+    if(remaining <= 0){
+      finish();
+      return;
+    }
+
+  }else{
+
+    $("timer").textContent =
+      elapsed.toFixed(1);
+
+    $("progress").style.width =
+      Math.min(
+        100,
+        position/chars.length*100
+      ) + "%";
+
+  }
+
+  updateStats();
+
+}
+
+
+function stopTimer(){
+
+  if(timerId){
+
+    clearInterval(timerId);
+    timerId = null;
+
+  }
+
+}
+
+
+/* =========================================================
+   INPUT
+   ========================================================= */
+
+$("input").addEventListener(
+  "keydown",
+  handleKey
+);
+
+
+function handleKey(e){
+
+  /*
+    HARD BLOCK clipboard shortcuts.
+  */
+
+  if(
+    (e.ctrlKey || e.metaKey) &&
+    ["v","V","c","C","x","X","a","A"].includes(e.key)
+  ){
+
+    e.preventDefault();
+    return;
+
+  }
+
+  if(e.key === "Tab"){
+    e.preventDefault();
+    return;
+  }
+
+  highlight(e.key);
+
+  /*
+    BACKSPACE
+  */
+
+  if(e.key === "Backspace"){
+
+    e.preventDefault();
+
+    if(position > 0){
+
+      position--;
+
+      const el =
+        $("typingText").children[position];
+
+      if(el){
+        delete el.dataset.result;
+      }
+
+      updateDisplay();
+      updateStats();
+
+      if(voiceEnabled){
+        /*
+          Do not automatically speak here.
+          The user is correcting the current word.
+        */
+      }
+
+    }
+
+    return;
+  }
+
+  /*
+    Ignore arrows, Enter, Shift etc.
+  */
+
+  if(e.key.length !== 1){
+    return;
+  }
+
+  e.preventDefault();
+
+  if(finished) return;
+
+  start();
+
+  const expected =
+    chars[position];
+
+  const typed =
+    e.key;
+
+  const isCorrect =
+    typed === expected;
+
+  const el =
+    $("typingText").children[position];
+
+  if(el){
+
+    el.dataset.result =
+      isCorrect
+        ? "correct"
+        : "wrong";
+
+  }
+
+  if(isCorrect){
+    correct++;
+  }else{
+    errors++;
+  }
+
+  position++;
+
+  updateDisplay();
+  updateStats();
+
+  /*
+    VOICE MODE:
+    after a space, verify the entire previous word.
+  */
+
+  if(
+    typed === " " &&
+    voiceEnabled
+  ){
+
+    const previousWordCorrect =
+      checkPreviousWord();
+
+    if(previousWordCorrect){
+
+      setTimeout(()=>{
+        speakCurrentWord();
+      },120);
+
+    }else{
+
+      $("status").textContent =
+        "❌ Word has an error — correct it before continuing.";
+
+    }
+
+  }
+
+  if(position >= chars.length){
+    finish();
+  }
+
+}
+
+
+/* =========================================================
+   PREVIOUS WORD CHECK
+   ========================================================= */
+
+function checkPreviousWord(){
+
+  let end =
+    position - 1;
+
+  let start =
+    end - 1;
+
+  while(
+    start > 0 &&
+    chars[start-1] !== " "
+  ){
+    start--;
+  }
+
+  for(
+    let i=start;
+    i<end;
+    i++
+  ){
+
+    const el =
+      $("typingText").children[i];
+
+    if(
+      !el ||
+      el.dataset.result !== "correct"
+    ){
+      return false;
+    }
+
+  }
+
+  return true;
+
+}
+
+
+/* =========================================================
+   CURRENT WORD
+   ========================================================= */
+
+function getCurrentWord(){
+
+  if(position >= chars.length){
+    return "";
+  }
+
+  let start = position;
+
+  while(
+    start > 0 &&
+    chars[start-1] !== " "
+  ){
+    start--;
+  }
+
+  let end = position;
+
+  while(
+    end < chars.length &&
+    chars[end] !== " "
+  ){
+    end++;
+  }
+
+  return chars
+    .slice(start,end)
+    .join("");
+
+}
+
+
+/* =========================================================
+   STATS
+   ========================================================= */
+
+function updateStats(){
+
+  const minutes =
+    Math.max(elapsed/60,.001);
+
+  const wpm =
+    Math.round(
+      correct/5/minutes
+    );
+
+  const total =
+    correct+errors;
+
+  const accuracy =
+    total === 0
+      ? 100
+      : Math.round(
+          correct/total*100
+        );
+
+  $("wpm").textContent =
+    isFinite(wpm)
+      ? wpm
+      : 0;
+
+  $("accuracy").textContent =
+    accuracy + "%";
+
+  $("errors").textContent =
+    errors;
+
+}
+
+
+/* =========================================================
+   FINISH
+   ========================================================= */
+
+function finish(){
+
+  if(finished) return;
+
+  finished = true;
+  started = false;
+
+  stopTimer();
+
+  if("speechSynthesis" in window){
+    speechSynthesis.cancel();
+  }
+
+  updateStats();
+
+  const finalWpm =
+    Number($("wpm").textContent) || 0;
+
+  const finalAccuracy =
+    $("accuracy").textContent;
+
+  $("resultWpm").textContent =
+    finalWpm;
+
+  $("resultAccuracy").textContent =
+    finalAccuracy;
+
+  $("resultCorrect").textContent =
+    correct;
+
+  $("resultErrors").textContent =
+    errors;
+
+  saveHistory(
+    finalWpm,
+    finalAccuracy,
+    correct,
+    errors
+  );
+
+  $("resultOverlay")
+    .classList.add("show");
+
+}
+
+
+/* =========================================================
+   VOICE
+   ========================================================= */
+
+function loadVoices(){
+
+  if(!("speechSynthesis" in window)){
+    return;
+  }
+
+  voices =
+    speechSynthesis.getVoices();
+
+  selectBestVoice();
+  renderVoices();
+
+}
+
+
+function selectBestVoice(){
+
+  if(!voices.length){
+    selectedVoice = null;
+    return;
+  }
+
+  const wanted =
+    language.toLowerCase();
+
+  const base =
+    wanted.split("-")[0];
+
+  selectedVoice =
+    voices.find(
+      v =>
+        v.lang.toLowerCase() === wanted
+    ) ||
+
+    voices.find(
+      v =>
+        v.lang.toLowerCase().startsWith(base)
+    ) ||
+
+    voices[0];
+
+}
+
+
+function renderVoices(){
+
+  const select =
+    $("voiceSelect");
+
+  if(!select) return;
+
+  select.innerHTML = "";
+
+  if(!voices.length){
+
+    const option =
+      document.createElement("option");
+
+    option.textContent =
+      "No browser voices found";
+
+    select.appendChild(option);
+
+    return;
+
+  }
+
+  voices.forEach((voice,index)=>{
+
+    const option =
+      document.createElement("option");
+
+    option.value = index;
+
+    option.textContent =
+      voice.name + " — " + voice.lang;
+
+    if(voice === selectedVoice){
+      option.selected = true;
+    }
+
+    select.appendChild(option);
+
+  });
+
+}
+
+
+function speak(text){
+
+  if(!voiceEnabled) return;
+
+  if(!text) return;
+
+  if(!("speechSynthesis" in window)){
+
+    $("status").textContent =
+      "Your browser does not support voice training.";
+
+    return;
+
+  }
+
+  if(!voices.length){
+    loadVoices();
+  }
+
+  speechSynthesis.cancel();
+
+  const utterance =
+    new SpeechSynthesisUtterance(text);
+
+  utterance.lang =
+    language;
+
+  utterance.rate =
+    voiceRate;
+
+  utterance.volume =
+    voiceVolume;
+
+  if(selectedVoice){
+    utterance.voice =
+      selectedVoice;
+  }
+
+  speechSynthesis.speak(
+    utterance
+  );
+
+}
+
+
+function speakCurrentWord(){
+
+  if(!voiceEnabled) return;
+
+  const word =
+    getCurrentWord();
+
+  if(word){
+    speak(word);
+  }
+
+}
+
+
+function toggleVoice(){
+
+  voiceEnabled =
+    !voiceEnabled;
+
+  localStorage.setItem(
+    "itype_voice",
+    voiceEnabled
+  );
+
+  updateVoiceUI();
+
+  if(!voiceEnabled){
+
+    if("speechSynthesis" in window){
+      speechSynthesis.cancel();
+    }
+
+    $("status").textContent =
+      "Voice Training is off.";
+
+  }else{
+
+    loadVoices();
+
+    $("status").textContent =
+      "Voice Training is on.";
+
+    /*
+      If test already started,
+      immediately speak the current word.
+    */
+
+    if(started){
+
+      setTimeout(()=>{
+        speakCurrentWord();
+      },100);
+
+    }
+
+  }
+
+}
+
+
+function updateVoiceUI(){
+
+  $("voice").textContent =
+    voiceEnabled
+      ? "🔊 Voice: On"
+      : "🔊 Voice: Off";
+
+  $("voicePill").textContent =
+    voiceEnabled
+      ? "🔊 Voice On"
+      : "🔇 Voice Off";
+
+  $("voiceSettingsBtn").textContent =
+    voiceEnabled
+      ? "Enabled"
+      : "Disabled";
+
+}
+
+
+function testVoice(){
+
+  if(!("speechSynthesis" in window)){
+
+    alert(
+      "Text-to-speech is not available in this browser."
+    );
+
+    return;
+
+  }
+
+  const examples = {
+    "en-US":"The quick brown fox",
+    "uz-UZ":"Bu ovoz sinovidir",
+    "ru-RU":"Это проверка голоса",
+    "de-DE":"Dies ist ein Sprachtest",
+    "es-ES":"Esta es una prueba de voz",
+    "fr-FR":"Ceci est un test de voix"
+  };
+
+  speak(
+    examples[language] ||
+    examples["en-US"]
+  );
+
+}
+
+
+/* =========================================================
+   SETTINGS EVENTS
+   ========================================================= */
+
+$("voice").onclick =
+  toggleVoice;
+
+$("voiceSettingsBtn").onclick =
+  toggleVoice;
+
+$("voiceRate").oninput =
+  function(){
+
+    voiceRate =
+      Number(this.value);
+
+    localStorage.setItem(
+      "itype_voice_rate",
+      voiceRate
+    );
+
+  };
+
+
+$("voiceVolume").oninput =
+  function(){
+
+    voiceVolume =
+      Number(this.value);
+
+    localStorage.setItem(
+      "itype_voice_volume",
+      voiceVolume
+    );
+
+  };
+
+
+$("voiceSelect").onchange =
+  function(){
+
+    const index =
+      Number(this.value);
+
+    if(voices[index]){
+      selectedVoice =
+        voices[index];
+    }
+
+  };
+
+
+/* =========================================================
+   CONTROLS
+   ========================================================= */
+
+document
+  .querySelectorAll("[data-mode]")
+  .forEach(btn=>{
+
+    btn.onclick = ()=>{
+
+      mode =
+        btn.dataset.mode;
+
+      document
+        .querySelectorAll("[data-mode]")
+        .forEach(x =>
+          x.classList.remove("active")
+        );
+
+      btn.classList.add("active");
+
+      $("timeGroup").style.display =
+        mode === "time"
+          ? "flex"
+          : "none";
+
+      $("wordsGroup").style.display =
+        mode === "words"
+          ? "flex"
+          : "none";
+
+      if(mode === "custom"){
+
+        openCustom();
+
+      }else{
+
+        prepare();
+
+      }
+
+    };
+
+  });
+
+
+document
+  .querySelectorAll("[data-time]")
+  .forEach(btn=>{
+
+    btn.onclick = ()=>{
+
+      duration =
+        Number(btn.dataset.time);
+
+      document
+        .querySelectorAll("[data-time]")
+        .forEach(x =>
+          x.classList.remove("active")
+        );
+
+      btn.classList.add("active");
+
+      prepare();
+
+    };
+
+  });
+
+
+document
+  .querySelectorAll("[data-words]")
+  .forEach(btn=>{
+
+    btn.onclick = ()=>{
+
+      wordLimit =
+        Number(btn.dataset.words);
+
+      document
+        .querySelectorAll("[data-words]")
+        .forEach(x =>
+          x.classList.remove("active")
+        );
+
+      btn.classList.add("active");
+
+      prepare();
+
+    };
+
+  });
+
+
+document
+  .querySelectorAll("[data-lang]")
+  .forEach(btn=>{
+
+    btn.onclick = ()=>{
+
+      language =
+        btn.dataset.lang;
+
+      document
+        .querySelectorAll("[data-lang]")
+        .forEach(x =>
+          x.classList.remove("active")
+        );
+
+      btn.classList.add("active");
+
+      $("langPill").textContent =
+        language.substring(0,2).toUpperCase();
+
+      loadVoices();
+
+      prepare();
+
+    };
+
+  });
+
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+$("restart").onclick =
+  prepare;
+
+$("retry").onclick =
+  function(){
+
+    closeModal("resultOverlay");
+    prepare();
+
+  };
+
+
+$("testCard").onclick =
+  ()=> $("input").focus();
+
+
+document.addEventListener(
+  "click",
+  e=>{
+
+    if(
+      !e.target.closest("button") &&
+      !e.target.closest("input") &&
+      !e.target.closest("textarea") &&
+      !e.target.closest("select") &&
+      !e.target.closest(".modal")
+    ){
+
+      $("input").focus();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   KEYBOARD
+   ========================================================= */
+
+function highlight(key){
+
+  let value =
+    key.toLowerCase();
+
+  if(key === " "){
+    value = " ";
+  }
+
+  const el =
+    document.querySelector(
+      `.key[data-key="${CSS.escape(value)}"]`
+    );
+
+  if(!el) return;
+
+  el.classList.add("pressed");
+
+  setTimeout(()=>{
+    el.classList.remove("pressed");
+  },100);
+
+}
+
+
+document.addEventListener(
+  "keydown",
+  e=>{
+
+    let key =
+      e.key.toLowerCase();
+
+    if(e.key === " "){
+      key = " ";
+    }
+
+    const el =
+      document.querySelector(
+        `.key[data-key="${CSS.escape(key)}"]`
+      );
+
+    if(el){
+      el.classList.add("pressed");
+    }
+
+  }
+);
+
+
+document.addEventListener(
+  "keyup",
+  e=>{
+
+    let key =
+      e.key.toLowerCase();
+
+    if(e.key === " "){
+      key = " ";
+    }
+
+    const el =
+      document.querySelector(
+        `.key[data-key="${CSS.escape(key)}"]`
+      );
+
+    if(el){
+      el.classList.remove("pressed");
+    }
+
+  }
+);
+
+
+$("keyboardToggle").onclick =
+  function(){
+
+    const keyboard =
+      $("keyboard");
+
+    keyboard.style.display =
+      keyboard.style.display === "none"
+        ? "flex"
+        : "none";
+
+  };
+
+
+/* =========================================================
+   CUSTOM TEXT
+   ========================================================= */
+
+function openCustom(){
+
+  $("customOverlay")
+    .classList.add("show");
+
+  renderSaved();
+
+}
+
+
+function saveCustom(){
+
+  const name =
+    $("customName").value.trim() ||
+    "My Text";
+
+  const text =
+    $("customInput").value.trim();
+
+  if(!text){
+
+    alert(
+      "Enter some text first."
+    );
+
+    return;
+
+  }
+
+  const saved =
+    JSON.parse(
+      localStorage.getItem(
+        "itype_custom"
+      ) || "[]"
+    );
+
+  const item = {
+    id:Date.now(),
+    name,
+    text
+  };
+
+  saved.push(item);
+
+  localStorage.setItem(
+    "itype_custom",
+    JSON.stringify(saved)
+  );
+
+  sourceText =
+    text;
+
+  mode =
+    "custom";
+
+  document
+    .querySelectorAll("[data-mode]")
+    .forEach(x =>
+      x.classList.remove("active")
+    );
+
+  document
+    .querySelector('[data-mode="custom"]')
+    .classList.add("active");
+
+  $("timeGroup").style.display =
+    "none";
+
+  $("wordsGroup").style.display =
+    "none";
+
+  $("customName").value =
+    "";
+
+  $("customInput").value =
+    "";
+
+  closeModal("customOverlay");
+
+  prepare();
+
+}
+
+
+function renderSaved(){
+
+  const box =
+    $("savedTexts");
+
+  const saved =
+    JSON.parse(
+      localStorage.getItem(
+        "itype_custom"
+      ) || "[]"
+    );
+
+  box.innerHTML = "";
+
+  if(!saved.length){
+
+    box.innerHTML =
+      `<small>No saved texts yet.</small>`;
+
+    return;
+
+  }
+
+  saved.forEach(item=>{
+
+    const row =
+      document.createElement("div");
+
+    row.className =
+      "saved-item";
+
+    const title =
+      document.createElement("div");
+
+    title.innerHTML =
+      `<b>${escapeHTML(item.name)}</b>
+       <br><small>${item.text.length} characters</small>`;
+
+    const actions =
+      document.createElement("div");
+
+    actions.className =
+      "saved-actions";
+
+    const use =
+      document.createElement("button");
+
+    use.className =
+      "small";
+
+    use.textContent =
+      "Use";
+
+    use.onclick =
+      ()=>useCustom(item.id);
+
+    const del =
+      document.createElement("button");
+
+    del.className =
+      "small delete";
+
+    del.textContent =
+      "Delete";
+
+    del.onclick =
+      ()=>deleteCustom(item.id);
+
+    actions.append(
+      use,
+      del
+    );
+
+    row.append(
+      title,
+      actions
+    );
+
+    box.appendChild(row);
+
+  });
+
+}
+
+
+function useCustom(id){
+
+  const saved =
+    JSON.parse(
+      localStorage.getItem(
+        "itype_custom"
+      ) || "[]"
+    );
+
+  const item =
+    saved.find(
+      x=>x.id === id
+    );
+
+  if(!item) return;
+
+  sourceText =
+    item.text;
+
+  mode =
+    "custom";
+
+  document
+    .querySelectorAll("[data-mode]")
+    .forEach(x =>
+      x.classList.remove("active")
+    );
+
+  document
+    .querySelector('[data-mode="custom"]')
+    .classList.add("active");
+
+  $("timeGroup").style.display =
+    "none";
+
+  $("wordsGroup").style.display =
+    "none";
+
+  closeModal("customOverlay");
+
+  prepare();
+
+}
+
+
+function deleteCustom(id){
+
+  let saved =
+    JSON.parse(
+      localStorage.getItem(
+        "itype_custom"
+      ) || "[]"
+    );
+
+  saved =
+    saved.filter(
+      x=>x.id !== id
+    );
+
+  localStorage.setItem(
+    "itype_custom",
+    JSON.stringify(saved)
+  );
+
+  renderSaved();
+
+}
+
+
+function escapeHTML(text){
+
+  return text
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================================
+   SETTINGS
+   ========================================================= */
+
+function openSettings(){
+
+  loadVoices();
+
+  $("voiceRate").value =
+    voiceRate;
+
+  $("voiceVolume").value =
+    voiceVolume;
+
+  $("themeSelect").value =
+    localStorage.getItem(
+      "itype_theme"
+    ) || "cyan";
+
+  $("fontSize").value =
+    localStorage.getItem(
+      "itype_font"
+    ) || 27;
+
+  $("settingsOverlay")
+    .classList.add("show");
+
+}
+
+
+$("fontSize").oninput =
+  function(){
+
+    $("typingText").style.fontSize =
+      this.value + "px";
+
+    localStorage.setItem(
+      "itype_font",
+      this.value
+    );
+
+  };
+
+
+$("themeSelect").onchange =
+  function(){
+
+    applyTheme(
+      this.value
+    );
+
+  };
+
+
+function applyTheme(name){
+
+  const root =
+    document.documentElement;
+
+  const theme = {
+
+    cyan:{
+      accent:"#6ee7ff",
+      accent2:"#8b5cf6"
+    },
+
+    purple:{
+      accent:"#b88cff",
+      accent2:"#6d5dfc"
+    },
+
+    green:{
+      accent:"#65e6a4",
+      accent2:"#2dd4bf"
+    },
+
+    orange:{
+      accent:"#ffb454",
+      accent2:"#ff6b6b"
+    },
+
+    light:{
+      bg:"#edf1f5",
+      bg2:"#ffffff",
+      card:"rgba(255,255,255,.85)",
+      card2:"#ffffff",
+      text:"#20242b",
+      muted:"#68717e",
+      accent:"#1479ff",
+      accent2:"#7c3aed",
+      key:"#e7ebf0",
+      key-hover:"#dce2e9",
+      border:"rgba(0,0,0,.08)"
+    }
+
+  }[name];
+
+  if(!theme) return;
+
+  Object.entries(theme)
+    .forEach(([key,value])=>{
+      root.style.setProperty(
+        "--"+key,
+        value
+      );
+    });
+
+  localStorage.setItem(
+    "itype_theme",
+    name
+  );
+
+}
+
+
+/* =========================================================
+   HISTORY
+   ========================================================= */
+
+function saveHistory(
+  wpm,
+  accuracy,
+  correctCount,
+  errorCount
+){
+
+  const history =
+    JSON.parse(
+      localStorage.getItem(
+        "itype_history"
+      ) || "[]"
+    );
+
+  history.unshift({
+
+    date:
+      new Date().toLocaleString(),
+
+    wpm,
+    accuracy,
+    correct:correctCount,
+    errors:errorCount
+
+  });
+
+  localStorage.setItem(
+    "itype_history",
+    JSON.stringify(
+      history.slice(0,50)
+    )
+  );
+
+}
+
+
+function openHistory(){
+
+  renderHistory();
+
+  $("historyOverlay")
+    .classList.add("show");
+
+}
+
+
+function renderHistory(){
+
+  const box =
+    $("historyList");
+
+  const history =
+    JSON.parse(
+      localStorage.getItem(
+        "itype_history"
+      ) || "[]"
+    );
+
+  if(!history.length){
+
+    box.innerHTML =
+      `<p style="color:var(--muted)">
+        No results yet.
+      </p>`;
+
+    return;
+
+  }
+
+  box.innerHTML = `
+    <div class="history-row">
+      <b>Date</b>
+      <b>WPM</b>
+      <b>Accuracy</b>
+      <b>Errors</b>
+    </div>
+  `;
+
+  history.forEach(item=>{
+
+    const row =
+      document.createElement("div");
+
+    row.className =
+      "history-row";
+
+    row.innerHTML = `
+      <span>${escapeHTML(item.date)}</span>
+      <b>${item.wpm}</b>
+      <span>${item.accuracy}</span>
+      <span>${item.errors}</span>
+    `;
+
+    box.appendChild(row);
+
+  });
+
+}
+
+
+function clearHistory(){
+
+  if(
+    !confirm(
+      "Clear all typing history?"
+    )
+  ){
+    return;
+  }
+
+  localStorage.removeItem(
+    "itype_history"
+  );
+
+  renderHistory();
+
+}
+
+
+/* =========================================================
+   MODALS
+   ========================================================= */
+
+function closeModal(id){
+
+  $(id)
+    .classList
+    .remove("show");
+
+}
+
+
+document
+  .querySelectorAll(".overlay")
+  .forEach(overlay=>{
+
+    overlay.addEventListener(
+      "click",
+      e=>{
+
+        if(e.target === overlay){
+          overlay.classList.remove("show");
+        }
+
+      }
+    );
+
+  });
+
+
+/* =========================================================
+   ANTI PASTE
+   ========================================================= */
+
+["paste","copy","cut","drop"].forEach(type=>{
+
+  document.addEventListener(
+    type,
+    e=>{
+
+      if(
+        document.activeElement === $("input") ||
+        e.target === $("testCard")
+      ){
+
+        e.preventDefault();
+
+      }
+
+    }
+  );
+
+});
+
+
+$("testCard").addEventListener(
+  "contextmenu",
+  e=>e.preventDefault()
+);
+
+
+/* =========================================================
+   INIT
+   ========================================================= */
+
+if("speechSynthesis" in window){
+
+  speechSynthesis.onvoiceschanged =
+    loadVoices;
+
+  loadVoices();
+
+}
+
+const savedTheme =
+  localStorage.getItem(
+    "itype_theme"
+  );
+
+if(savedTheme){
+  applyTheme(savedTheme);
+}
+
+const savedFont =
+  localStorage.getItem(
+    "itype_font"
+  );
+
+if(savedFont){
+  $("typingText").style.fontSize =
+    savedFont + "px";
+}
+
+$("voiceRate").value =
+  voiceRate;
+
+$("voiceVolume").value =
+  voiceVolume;
+
+updateVoiceUI();
+
+$("langPill").textContent =
+  language.substring(0,2).toUpperCase();
+
+prepare();
+
+setTimeout(()=>{
+  $("input").focus();
+},300);
+
+</script>
+
+</body>
+</html>
+```
