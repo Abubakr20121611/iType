@@ -3,821 +3,739 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>iType — Typing Studio</title>
-<meta name="theme-color" content="#0b1020">
+<title>iType</title>
 
 <style>
 :root{
-  --bg:#080b14;
-  --bg2:#0e1322;
-  --panel:rgba(18,24,40,.82);
-  --panel2:rgba(24,31,51,.76);
-  --text:#f5f7ff;
-  --muted:#8d97b3;
-  --border:rgba(255,255,255,.08);
-  --accent:#64d8ff;
-  --accent2:#8b7cff;
-  --correct:#72e6a8;
-  --wrong:#ff7187;
-  --cursor:#ffffff;
-  --key:#171e31;
-  --keyHover:#242e49;
-  --shadow:0 20px 60px rgba(0,0,0,.34);
+  --bg:#323437;
+  --panel:#2b2e31;
+  --text:#d1d0c5;
+  --muted:#646669;
+  --accent:#e2b714;
+  --good:#d1d0c5;
+  --bad:#ca4754;
+  --keyboard:#2c2f31;
+  --key:#3a3d40;
+  --key-border:#45484b;
 }
 
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:
-radial-gradient(circle at 15% 10%,rgba(100,216,255,.09),transparent 25%),
-radial-gradient(circle at 85% 15%,rgba(139,124,255,.10),transparent 28%),
-linear-gradient(135deg,var(--bg),var(--bg2));color:var(--text)}
+*{
+  box-sizing:border-box;
+}
+
+html,body{
+  margin:0;
+  min-height:100%;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Inter,Arial,Helvetica,sans-serif;
+}
 
 body{
-  padding:22px;
   overflow-x:hidden;
 }
 
-button,input,textarea,select{font:inherit}
-
-button{
-  border:0;
-  cursor:pointer;
-  color:inherit;
+button,input,textarea,select{
+  font:inherit;
 }
 
 .app{
-  width:min(1250px,100%);
+  width:min(1200px,calc(100% - 32px));
   margin:auto;
+  padding:24px 0 34px;
 }
+
+/* ================= HEADER ================= */
 
 .header{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:14px;
-  margin-bottom:28px;
+  gap:16px;
+  margin-bottom:42px;
 }
 
 .brand{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.logo{
-  width:45px;
-  height:45px;
-  border-radius:14px;
-  display:grid;
-  place-items:center;
+  font-size:30px;
   font-weight:900;
-  font-size:20px;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  color:#07101b;
-  box-shadow:0 12px 35px rgba(100,216,255,.22);
+  letter-spacing:-1.8px;
 }
 
-.brandText h1{
-  margin:0;
-  font-size:21px;
-  letter-spacing:-.5px;
-}
-
-.brandText span{
-  color:var(--muted);
-  font-size:12px;
+.brand span{
+  color:var(--accent);
 }
 
 .nav{
   display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-}
-
-.nav button,
-.pill{
-  background:rgba(255,255,255,.045);
-  border:1px solid var(--border);
-  padding:10px 14px;
-  border-radius:12px;
-  color:var(--muted);
-  transition:.18s ease;
-}
-
-.nav button:hover,
-.pill:hover{
-  background:rgba(255,255,255,.08);
-  color:var(--text);
-  transform:translateY(-1px);
-}
-
-.hero{
-  margin-bottom:22px;
-}
-
-.eyebrow{
-  color:var(--accent);
-  font-size:12px;
-  font-weight:800;
-  text-transform:uppercase;
-  letter-spacing:1.8px;
-  margin-bottom:8px;
-}
-
-.hero h2{
-  margin:0;
-  font-size:clamp(28px,5vw,52px);
-  line-height:1;
-  letter-spacing:-2px;
-}
-
-.hero p{
-  margin:14px 0 0;
-  color:var(--muted);
-  max-width:720px;
-  line-height:1.6;
-}
-
-.topbar{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  flex-wrap:wrap;
-  margin-bottom:14px;
-}
-
-.controls{
-  display:flex;
   gap:7px;
   flex-wrap:wrap;
 }
 
-.control{
-  padding:10px 13px;
-  border-radius:11px;
-  border:1px solid var(--border);
-  background:rgba(255,255,255,.035);
+.nav button{
+  border:0;
+  background:transparent;
   color:var(--muted);
-  transition:.18s ease;
+  padding:8px 10px;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.nav button:hover{
+  color:var(--text);
+  background:rgba(255,255,255,.035);
+}
+
+/* ================= CONTROLS ================= */
+
+.controls{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  padding:12px 15px;
+  background:rgba(0,0,0,.10);
+  border-radius:10px;
+  margin-bottom:18px;
+}
+
+.group{
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+
+.group-title{
+  color:var(--accent);
+  font-size:12px;
+  margin-right:2px;
+}
+
+.control{
+  border:0;
+  background:transparent;
+  color:var(--muted);
+  padding:5px 7px;
+  border-radius:6px;
+  cursor:pointer;
 }
 
 .control:hover{
-  background:rgba(255,255,255,.07);
   color:var(--text);
 }
 
 .control.active{
-  color:#06111a;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  border-color:transparent;
-  font-weight:800;
+  color:var(--accent);
 }
 
-.voicePill{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  padding:9px 12px;
-  border-radius:999px;
-  border:1px solid var(--border);
-  background:rgba(255,255,255,.04);
+/* ================= TEST ================= */
+
+.test-card{
+  padding-top:12px;
+}
+
+.language-line{
+  height:18px;
   color:var(--muted);
-}
-
-.voicePill.on{
-  color:var(--correct);
-  border-color:rgba(114,230,168,.25);
-}
-
-.langs{
-  display:flex;
-  gap:7px;
-  flex-wrap:wrap;
-  margin-bottom:14px;
-}
-
-.lang{
-  min-width:50px;
-  padding:9px 12px;
-  border-radius:11px;
-  background:rgba(255,255,255,.035);
-  border:1px solid var(--border);
-  color:var(--muted);
-}
-
-.lang.active{
-  color:var(--text);
-  background:linear-gradient(135deg,rgba(100,216,255,.16),rgba(139,124,255,.16));
-  border-color:rgba(100,216,255,.35);
-}
-
-.card{
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:25px;
-  box-shadow:var(--shadow);
-  backdrop-filter:blur(18px);
-}
-
-.stats{
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:10px;
-  margin-bottom:14px;
-}
-
-.stat{
-  padding:17px;
-  background:rgba(255,255,255,.035);
-  border:1px solid var(--border);
-  border-radius:18px;
-}
-
-.statLabel{
-  color:var(--muted);
-  font-size:11px;
-  text-transform:uppercase;
-  letter-spacing:1px;
-}
-
-.statValue{
-  margin-top:6px;
-  font-size:25px;
-  font-weight:850;
-  letter-spacing:-.8px;
-}
-
-.testCard{
-  padding:30px;
-}
-
-.testHeader{
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  align-items:center;
-  margin-bottom:24px;
-}
-
-.testStatus{
   font-size:12px;
-  color:var(--muted);
+  margin-bottom:10px;
 }
 
-.progress{
-  height:5px;
-  background:rgba(255,255,255,.06);
-  border-radius:999px;
-  overflow:hidden;
-}
-
-.progressFill{
-  width:0%;
-  height:100%;
-  background:linear-gradient(90deg,var(--accent),var(--accent2));
-  transition:width .1s linear;
-}
-
-.textWrap{
-  margin-top:25px;
-  min-height:190px;
+.typing-wrap{
   position:relative;
+  min-height:255px;
 }
 
-.typingText{
-  font-size:clamp(23px,3vw,32px);
-  line-height:1.75;
-  letter-spacing:.2px;
-  color:#62708f;
+.typing-text{
+  font-size:31px;
+  line-height:1.6;
+  letter-spacing:.1px;
+  color:var(--muted);
   user-select:none;
   word-break:break-word;
 }
 
 .char{
   position:relative;
-  transition:.08s ease;
 }
 
 .char.correct{
-  color:var(--correct);
+  color:var(--good);
 }
 
 .char.wrong{
-  color:var(--wrong);
-  text-decoration:underline;
-  text-decoration-thickness:2px;
-  text-underline-offset:5px;
+  color:var(--bad);
 }
 
 .char.current{
   color:var(--text);
 }
 
-.char.current::before{
+.char.current::after{
   content:"";
   position:absolute;
   left:-2px;
-  top:7%;
+  top:11%;
   width:2px;
-  height:86%;
+  height:78%;
+  background:var(--accent);
   border-radius:2px;
-  background:var(--cursor);
-  animation:blink .85s infinite;
+  animation:blink 1s infinite;
 }
 
 @keyframes blink{
   0%,45%{opacity:1}
-  46%,100%{opacity:.15}
+  46%,100%{opacity:0}
 }
 
-.hiddenInput{
-  position:absolute;
-  left:-9999px;
-  width:1px;
-  height:1px;
-  opacity:0;
-  pointer-events:none;
-}
+/* ================= STATS ================= */
 
-.voiceTraining{
-  display:none;
-  text-align:center;
-  min-height:190px;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-}
-
-.voiceTraining.show{
+.stats{
   display:flex;
-}
-
-.speaker{
-  font-size:55px;
-  margin-bottom:10px;
-  filter:drop-shadow(0 10px 20px rgba(100,216,255,.18));
-}
-
-.voiceWordIndex{
-  color:var(--muted);
-  font-size:13px;
-}
-
-.voiceHint{
+  gap:34px;
+  flex-wrap:wrap;
   margin-top:8px;
-  font-size:22px;
-  font-weight:800;
+  margin-bottom:24px;
 }
 
-.actions{
-  margin-top:24px;
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  flex-wrap:wrap;
+.stat{
+  min-width:95px;
 }
 
-.actionGroup{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
+.stat-label{
+  font-size:11px;
+  color:var(--muted);
+  text-transform:lowercase;
+  margin-bottom:3px;
 }
 
-.btn{
-  padding:12px 16px;
-  border-radius:13px;
-  border:1px solid var(--border);
-  background:rgba(255,255,255,.05);
-  color:var(--text);
-  transition:.18s ease;
+.stat-value{
+  font-size:20px;
 }
 
-.btn:hover{
-  transform:translateY(-1px);
-  background:rgba(255,255,255,.09);
-}
-
-.btn.primary{
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  color:#06111a;
-  font-weight:850;
-  border-color:transparent;
-}
+/* ================= KEYBOARD ================= */
 
 .keyboard{
-  margin-top:18px;
-  padding:17px;
-  display:none;
+  background:rgba(0,0,0,.08);
+  border-radius:16px;
+  padding:12px 14px;
+  border:1px solid rgba(255,255,255,.035);
+  margin-top:12px;
 }
 
-.keyboard.show{
-  display:block;
-}
-
-.kbRow{
+.kb-row{
   display:flex;
-  gap:7px;
-  margin-top:7px;
+  gap:5px;
+  margin-bottom:5px;
 }
 
 .key{
   flex:1;
+  height:48px;
   min-width:0;
-  height:47px;
-  display:grid;
-  place-items:center;
-  border-radius:10px;
+  border:1px solid var(--key-border);
   background:var(--key);
-  border:1px solid var(--border);
-  color:#aeb7ce;
-  font-size:13px;
-  transition:.08s;
+  color:#8d9295;
+  border-radius:7px;
+  font-size:12px;
+  cursor:pointer;
+  transition:background .08s,color .08s,transform .08s;
 }
 
 .key:hover{
-  background:var(--keyHover);
+  background:#43474a;
+  color:var(--text);
 }
 
 .key.active{
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  color:#07101b;
+  background:var(--accent);
+  color:#242424;
+  border-color:var(--accent);
   transform:translateY(1px);
+}
+
+.key.wide{
+  flex:1.45;
 }
 
 .key.space{
   flex:6;
 }
 
-.footer{
-  text-align:center;
-  padding:24px 0 8px;
-  color:var(--muted);
-  font-size:12px;
+/* ================= BOTTOM ================= */
+
+.bottom{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-top:22px;
 }
 
-.modal{
+.restart{
+  border:0;
+  background:transparent;
+  color:var(--muted);
+  cursor:pointer;
+  padding:8px 12px;
+  border-radius:8px;
+}
+
+.restart:hover{
+  color:var(--text);
+  background:rgba(255,255,255,.035);
+}
+
+.tip{
+  text-align:center;
+  color:var(--muted);
+  font-size:11px;
+  margin-top:12px;
+}
+
+/* ================= INPUT ================= */
+
+.hidden-input{
+  position:fixed;
+  left:-10000px;
+  top:0;
+  width:1px;
+  height:1px;
+  opacity:0;
+}
+
+/* ================= MODALS ================= */
+
+.overlay{
   position:fixed;
   inset:0;
+  background:rgba(0,0,0,.62);
+  backdrop-filter:blur(4px);
   display:none;
   align-items:center;
   justify-content:center;
-  padding:20px;
-  background:rgba(2,4,10,.72);
-  backdrop-filter:blur(12px);
-  z-index:100;
+  padding:16px;
+  z-index:50;
 }
 
-.modal.show{
+.overlay.show{
   display:flex;
 }
 
-.modalBox{
-  width:min(760px,100%);
-  max-height:88vh;
-  overflow:auto;
-  padding:24px;
-  border-radius:22px;
-  background:#0d1424;
-  border:1px solid var(--border);
-  box-shadow:0 30px 90px rgba(0,0,0,.5);
+.modal{
+  width:min(620px,100%);
+  background:var(--panel);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:15px;
+  padding:22px;
+  box-shadow:0 30px 80px rgba(0,0,0,.35);
 }
 
-.modalHead{
+.modal-head{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:12px;
-  margin-bottom:20px;
+  gap:10px;
+  margin-bottom:16px;
 }
 
-.modalHead h3{
+.modal-head h3{
   margin:0;
-  font-size:21px;
+  font-size:19px;
 }
 
 .close{
-  width:38px;
-  height:38px;
-  border-radius:10px;
-  background:rgba(255,255,255,.05);
+  border:0;
+  background:transparent;
   color:var(--muted);
+  font-size:20px;
+  cursor:pointer;
 }
 
-.setting{
-  padding:14px 0;
-  border-bottom:1px solid var(--border);
-}
-
-.setting:last-child{
-  border-bottom:0;
-}
-
-.settingLabel{
-  margin-bottom:9px;
-  font-size:13px;
-  color:var(--muted);
-}
-
-.setting input,
-.setting select,
-.setting textarea,
-.customInput{
-  width:100%;
-  border:1px solid var(--border);
-  background:#111a2d;
+.close:hover{
   color:var(--text);
-  border-radius:12px;
-  padding:12px;
+}
+
+/* ================= RESULT ================= */
+
+.result-main{
+  text-align:center;
+}
+
+.result-label{
+  color:var(--muted);
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+
+.result-wpm{
+  font-size:84px;
+  font-weight:900;
+  color:var(--accent);
+  line-height:1;
+  margin:10px 0;
+}
+
+.result-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin:22px 0;
+}
+
+.result-item{
+  background:rgba(0,0,0,.10);
+  padding:13px 8px;
+  border-radius:10px;
+}
+
+.result-item strong{
+  display:block;
+  font-size:18px;
+}
+
+.result-item span{
+  font-size:10px;
+  color:var(--muted);
+}
+
+.primary{
+  border:0;
+  background:var(--accent);
+  color:#1f2021;
+  font-weight:800;
+  padding:10px 16px;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+/* ================= CUSTOM ================= */
+
+.modal-input,
+.modal-textarea{
+  width:100%;
+  background:#232629;
+  color:var(--text);
+  border:1px solid #3c4043;
+  border-radius:8px;
+  padding:11px 12px;
   outline:none;
 }
 
-.setting textarea,
-.customInput{
-  min-height:140px;
+.modal-textarea{
+  min-height:160px;
   resize:vertical;
 }
 
-.setting input[type="range"]{
-  padding:0;
-}
-
-.switchRow{
+.custom-actions{
   display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:20px;
+  gap:8px;
+  margin-top:10px;
+  flex-wrap:wrap;
 }
 
-.switch{
-  width:50px;
-  height:29px;
-  border-radius:999px;
-  background:#25304a;
-  position:relative;
-}
-
-.switch::after{
-  content:"";
-  position:absolute;
-  width:23px;
-  height:23px;
-  top:3px;
-  left:3px;
-  background:#fff;
-  border-radius:50%;
-  transition:.18s;
-}
-
-.switch.on{
-  background:linear-gradient(90deg,var(--accent),var(--accent2));
-}
-
-.switch.on::after{
-  left:24px;
-}
-
-.customList{
-  margin-top:16px;
+.custom-list{
+  margin-top:18px;
   display:grid;
-  gap:9px;
+  gap:8px;
+  max-height:280px;
+  overflow:auto;
 }
 
-.customItem{
+.custom-item{
   display:flex;
-  align-items:center;
   justify-content:space-between;
+  align-items:center;
   gap:10px;
-  padding:12px;
-  border:1px solid var(--border);
-  border-radius:13px;
-  background:rgba(255,255,255,.035);
+  padding:10px 12px;
+  border:1px solid rgba(255,255,255,.055);
+  border-radius:9px;
+  background:rgba(0,0,0,.08);
 }
 
-.historyList{
-  display:grid;
-  gap:9px;
-}
-
-.historyItem{
-  display:grid;
-  grid-template-columns:1fr auto auto;
-  gap:14px;
-  align-items:center;
-  padding:13px;
-  border:1px solid var(--border);
-  border-radius:13px;
-  background:rgba(255,255,255,.03);
-}
-
-.historyMeta{
-  color:var(--muted);
+.custom-meta{
   font-size:11px;
-  margin-top:4px;
-}
-
-.result{
-  text-align:center;
-}
-
-.resultTitle{
-  font-size:13px;
   color:var(--muted);
-  text-transform:uppercase;
-  letter-spacing:1.5px;
+  margin-top:3px;
 }
 
-.resultMain{
-  font-size:70px;
-  line-height:1;
-  margin:13px 0 5px;
-  font-weight:900;
-  letter-spacing:-4px;
-}
-
-.resultSub{
+.small-btn{
+  border:0;
+  background:transparent;
   color:var(--muted);
+  cursor:pointer;
 }
 
-.resultGrid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:9px;
-  margin-top:25px;
-}
-
-.resultStat{
-  padding:15px;
-  border:1px solid var(--border);
-  border-radius:15px;
-  background:rgba(255,255,255,.035);
-}
-
-.resultStat strong{
-  display:block;
-  font-size:19px;
-  margin-bottom:3px;
-}
-
-.resultStat span{
-  color:var(--muted);
-  font-size:11px;
+.small-btn:hover{
+  color:var(--text);
 }
 
 .empty{
-  padding:25px;
-  text-align:center;
   color:var(--muted);
+  text-align:center;
+  padding:18px;
 }
 
+/* ================= LIGHT ================= */
+
+.light{
+  --bg:#f2f2f2;
+  --panel:#ffffff;
+  --text:#2e3133;
+  --muted:#909395;
+  --good:#2f3335;
+  --keyboard:#e4e6e8;
+  --key:#d9dcdf;
+  --key-border:#c9cccf;
+}
+
+.light .controls,
+.light .keyboard{
+  background:rgba(0,0,0,.035);
+}
+
+.light .modal-input,
+.light .modal-textarea{
+  background:#f3f4f5;
+  color:#2e3133;
+  border-color:#d2d5d7;
+}
+
+.light .char.current{
+  color:#2e3133;
+}
+
+/* ================= RESPONSIVE ================= */
+
 @media(max-width:900px){
-  .stats{
-    grid-template-columns:repeat(3,1fr);
+
+  .typing-text{
+    font-size:26px;
   }
+
+  .key{
+    height:43px;
+  }
+
 }
 
 @media(max-width:650px){
-  body{padding:13px}
-  .header{align-items:flex-start}
-  .nav{justify-content:flex-end}
-  .testCard{padding:20px}
-  .stats{grid-template-columns:repeat(2,1fr)}
-  .typingText{font-size:21px}
-  .resultGrid{grid-template-columns:repeat(2,1fr)}
-  .historyItem{grid-template-columns:1fr}
-  .key{height:40px;font-size:10px}
-}
 
-.light{
-  --bg:#edf3fa;
-  --bg2:#ffffff;
-  --panel:rgba(255,255,255,.85);
-  --panel2:#fff;
-  --text:#152038;
-  --muted:#63708a;
-  --border:rgba(20,35,65,.10);
-  --key:#e9eef7;
-  --keyHover:#dbe3f1;
-  --cursor:#152038;
+  .app{
+    width:min(100% - 20px,1200px);
+    padding-top:14px;
+  }
+
+  .header{
+    margin-bottom:28px;
+  }
+
+  .nav button{
+    padding:6px;
+  }
+
+  .controls{
+    gap:6px;
+    padding:10px;
+  }
+
+  .typing-text{
+    font-size:21px;
+    line-height:1.7;
+  }
+
+  .typing-wrap{
+    min-height:260px;
+  }
+
+  .stats{
+    gap:18px;
+  }
+
+  .stat{
+    min-width:72px;
+  }
+
+  .stat-value{
+    font-size:18px;
+  }
+
+  .key{
+    height:36px;
+    font-size:9px;
+  }
+
+  .keyboard{
+    padding:8px;
+  }
+
+  .kb-row{
+    gap:3px;
+    margin-bottom:3px;
+  }
+
+  .result-wpm{
+    font-size:68px;
+  }
+
+  .result-grid{
+    grid-template-columns:repeat(3,1fr);
+  }
+
 }
 </style>
 </head>
 
 <body>
+
 <div class="app">
 
   <header class="header">
+
     <div class="brand">
-      <div class="logo">i</div>
-      <div class="brandText">
-        <h1>iType</h1>
-        <span>Typing Studio</span>
-      </div>
+      i<span>Type</span>
     </div>
 
-    <nav class="nav">
-      <button onclick="openHistory()">History</button>
-      <button onclick="openCustom()">Custom</button>
-      <button onclick="openSettings()">Settings</button>
-    </nav>
+    <div class="nav">
+      <button id="customBtn">custom</button>
+      <button id="themeBtn">◐</button>
+    </div>
+
   </header>
 
-  <section class="hero">
-    <div class="eyebrow">Focus • Accuracy • Speed</div>
-    <h2>Type without looking.</h2>
-    <p>Practice touch typing, improve accuracy and build real keyboard muscle memory.</p>
-  </section>
 
-  <div class="topbar">
-    <div class="controls">
-      <button class="control active" data-mode="time" onclick="setMode('time')">Time</button>
-      <button class="control" data-mode="words" onclick="setMode('words')">Words</button>
-      <button class="control" data-mode="custom" onclick="setMode('custom')">Custom</button>
+  <!-- CONTROLS -->
+
+  <div class="controls">
+
+    <div class="group">
+
+      <span class="group-title">time</span>
+
+      <button class="control active" data-time="15">
+        15
+      </button>
+
+      <button class="control" data-time="30">
+        30
+      </button>
+
+      <button class="control" data-time="60">
+        60
+      </button>
+
+      <button class="control" data-time="120">
+        120
+      </button>
+
     </div>
 
-    <button id="voicePill" class="voicePill" onclick="toggleVoice()">
-      🔊 Voice Off
-    </button>
+
+    <div class="group">
+
+      <span class="group-title">words</span>
+
+      <button class="control" data-words="10">
+        10
+      </button>
+
+      <button class="control" data-words="25">
+        25
+      </button>
+
+      <button class="control" data-words="50">
+        50
+      </button>
+
+      <button class="control" data-words="100">
+        100
+      </button>
+
+    </div>
+
+
+    <div class="group">
+
+      <span class="group-title">language</span>
+
+      <button class="control active" data-lang="en-US">
+        english
+      </button>
+
+      <button class="control" data-lang="uz-UZ">
+        uzbek
+      </button>
+
+      <button class="control" data-lang="ru-RU">
+        russian
+      </button>
+
+      <button class="control" data-lang="ko-KR">
+        korean
+      </button>
+
+    </div>
+
   </div>
 
-  <div class="langs">
-    <button class="lang active" data-lang="en-US" onclick="setLanguage('en-US')">EN</button>
-    <button class="lang" data-lang="uz-UZ" onclick="setLanguage('uz-UZ')">UZ</button>
-    <button class="lang" data-lang="ru-RU" onclick="setLanguage('ru-RU')">RU</button>
-    <button class="lang" data-lang="ko-KR" onclick="setLanguage('ko-KR')">KR</button>
-  </div>
 
-  <section class="stats">
-    <div class="stat">
-      <div class="statLabel">WPM</div>
-      <div id="wpm" class="statValue">0</div>
+  <!-- TEST -->
+
+  <main class="test-card">
+
+    <div id="languageLine" class="language-line">
+      english
     </div>
 
-    <div class="stat">
-      <div class="statLabel">Accuracy</div>
-      <div id="accuracy" class="statValue">100%</div>
+    <div class="typing-wrap">
+
+      <div id="typingText" class="typing-text"></div>
+
     </div>
 
-    <div class="stat">
-      <div class="statLabel">Time</div>
-      <div id="timeStat" class="statValue">30</div>
-    </div>
 
-    <div class="stat">
-      <div class="statLabel">Errors</div>
-      <div id="errors" class="statValue">0</div>
-    </div>
+    <!-- STATS -->
 
-    <div class="stat">
-      <div class="statLabel">Correct</div>
-      <div id="correct" class="statValue">0</div>
-    </div>
-  </section>
+    <div class="stats">
 
-  <section class="card testCard">
-    <div class="testHeader">
-      <div id="status" class="testStatus">Click here and start typing</div>
-      <div id="modeLabel" class="testStatus">30 seconds</div>
-    </div>
-
-    <div class="progress">
-      <div id="progressFill" class="progressFill"></div>
-    </div>
-
-    <div class="textWrap">
-
-      <div id="typingText" class="typingText"></div>
-
-      <div id="voiceTraining" class="voiceTraining">
-        <div class="speaker">🔊</div>
-        <div id="voiceWordIndex" class="voiceWordIndex">Word 1</div>
-        <div id="voiceHint" class="voiceHint">Listen and type the word</div>
+      <div class="stat">
+        <div class="stat-label">wpm</div>
+        <div id="wpm" class="stat-value">0</div>
       </div>
 
-      <textarea
-        id="hiddenInput"
-        class="hiddenInput"
-        autocomplete="off"
-        autocorrect="off"
-        autocapitalize="off"
-        spellcheck="false"
-        aria-hidden="true"
-      ></textarea>
-    </div>
-
-    <div class="actions">
-      <div class="actionGroup">
-        <button class="btn primary" onclick="restart()">↻ Restart</button>
-        <button class="btn" onclick="toggleVoice()">🔊 Voice</button>
-        <button class="btn" onclick="toggleKeyboard()">⌨ Keyboard</button>
+      <div class="stat">
+        <div class="stat-label">acc</div>
+        <div id="accuracy" class="stat-value">100%</div>
       </div>
 
-      <div class="actionGroup">
-        <button class="btn" onclick="focusInput()">Start typing</button>
+      <div class="stat">
+        <div class="stat-label">raw</div>
+        <div id="raw" class="stat-value">0</div>
       </div>
+
+      <div class="stat">
+        <div class="stat-label">errors</div>
+        <div id="errors" class="stat-value">0</div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-label">time</div>
+        <div id="time" class="stat-value">00:15</div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-label">chars</div>
+        <div id="chars" class="stat-value">0/0/0</div>
+      </div>
+
     </div>
 
-    <div id="keyboard" class="keyboard">
-      <div class="kbRow">
+
+    <!-- KEYBOARD -->
+
+    <div class="keyboard">
+
+      <div class="kb-row">
+
         <button class="key" data-key="q">Q</button>
         <button class="key" data-key="w">W</button>
         <button class="key" data-key="e">E</button>
@@ -828,9 +746,11 @@ button{
         <button class="key" data-key="i">I</button>
         <button class="key" data-key="o">O</button>
         <button class="key" data-key="p">P</button>
+
       </div>
 
-      <div class="kbRow">
+      <div class="kb-row">
+
         <button class="key" data-key="a">A</button>
         <button class="key" data-key="s">S</button>
         <button class="key" data-key="d">D</button>
@@ -840,9 +760,11 @@ button{
         <button class="key" data-key="j">J</button>
         <button class="key" data-key="k">K</button>
         <button class="key" data-key="l">L</button>
+
       </div>
 
-      <div class="kbRow">
+      <div class="kb-row">
+
         <button class="key" data-key="z">Z</button>
         <button class="key" data-key="x">X</button>
         <button class="key" data-key="c">C</button>
@@ -850,1294 +772,1709 @@ button{
         <button class="key" data-key="b">B</button>
         <button class="key" data-key="n">N</button>
         <button class="key" data-key="m">M</button>
+
       </div>
 
-      <div class="kbRow">
-        <button class="key space" data-key=" ">SPACE</button>
+      <div class="kb-row">
+
+        <button class="key wide" data-key="Backspace">⌫</button>
+
+        <button class="key space" data-key=" ">
+          SPACE
+        </button>
+
+        <button class="key wide" data-key="Enter">
+          ↵
+        </button>
+
       </div>
+
     </div>
-  </section>
 
-  <div class="footer">
-    iType • Practice every day. Build real speed.
-  </div>
+
+    <div class="bottom">
+
+      <button id="restartBtn" class="restart">
+        ↻ restart
+      </button>
+
+    </div>
+
+    <div class="tip">
+      click anywhere and type • clipboard shortcuts disabled
+    </div>
+
+  </main>
+
 </div>
+
+
+<!-- HIDDEN INPUT -->
+
+<textarea
+  id="input"
+  class="hidden-input"
+  autocomplete="off"
+  autocorrect="off"
+  autocapitalize="off"
+  spellcheck="false"
+></textarea>
 
 
 <!-- RESULT -->
-<div id="resultModal" class="modal">
-  <div class="modalBox result">
-    <div class="modalHead">
-      <h3>Test complete</h3>
-      <button class="close" onclick="closeModal('resultModal')">✕</button>
+
+<div id="resultOverlay" class="overlay">
+
+  <div class="modal result-main">
+
+    <div class="result-label">
+      test complete
     </div>
 
-    <div class="resultTitle">Your speed</div>
-    <div id="resultWpm" class="resultMain">0</div>
-    <div class="resultSub">words per minute</div>
+    <div id="resultWpm" class="result-wpm">
+      0
+    </div>
 
-    <div class="resultGrid">
-      <div class="resultStat">
-        <strong id="resultAccuracy">100%</strong>
-        <span>Accuracy</span>
+    <div style="color:var(--muted)">
+      wpm
+    </div>
+
+    <div class="result-grid">
+
+      <div class="result-item">
+        <strong id="resultAcc">100%</strong>
+        <span>accuracy</span>
       </div>
 
-      <div class="resultStat">
-        <strong id="resultCorrect">0</strong>
-        <span>Correct</span>
-      </div>
-
-      <div class="resultStat">
+      <div class="result-item">
         <strong id="resultErrors">0</strong>
-        <span>Errors</span>
+        <span>errors</span>
       </div>
 
-      <div class="resultStat">
+      <div class="result-item">
         <strong id="resultChars">0</strong>
-        <span>Characters</span>
+        <span>characters</span>
       </div>
+
     </div>
 
-    <div style="margin-top:22px">
-      <button class="btn primary" onclick="restart();closeModal('resultModal')">
-        Try again
-      </button>
-    </div>
-  </div>
-</div>
-
-
-<!-- SETTINGS -->
-<div id="settingsModal" class="modal">
-  <div class="modalBox">
-
-    <div class="modalHead">
-      <h3>Settings</h3>
-      <button class="close" onclick="closeModal('settingsModal')">✕</button>
-    </div>
-
-    <div class="setting">
-      <div class="switchRow">
-        <div>
-          <div style="font-weight:800">Voice training</div>
-          <div class="settingLabel">Hear one word, type it correctly, then hear the next.</div>
-        </div>
-        <button id="voiceTrainingSwitch" class="switch" onclick="toggleVoiceTraining()"></button>
-      </div>
-    </div>
-
-    <div class="setting">
-      <div class="settingLabel">Voice</div>
-      <select id="voiceSelect"></select>
-    </div>
-
-    <div class="setting">
-      <div class="settingLabel">Voice speed</div>
-      <input id="voiceRate" type="range" min="0.5" max="1.8" step="0.1" value="1">
-    </div>
-
-    <div class="setting">
-      <div class="settingLabel">Voice volume</div>
-      <input id="voiceVolume" type="range" min="0" max="1" step="0.05" value="1">
-    </div>
-
-    <div class="setting">
-      <div class="settingLabel">Theme</div>
-      <select id="themeSelect" onchange="applyTheme(this.value)">
-        <option value="dark">Dark</option>
-        <option value="light">Light</option>
-      </select>
-    </div>
+    <button id="resultRestart" class="primary">
+      restart
+    </button>
 
   </div>
+
 </div>
 
 
 <!-- CUSTOM -->
-<div id="customModal" class="modal">
-  <div class="modalBox">
 
-    <div class="modalHead">
+<div id="customOverlay" class="overlay">
+
+  <div class="modal">
+
+    <div class="modal-head">
+
       <h3>Custom text</h3>
-      <button class="close" onclick="closeModal('customModal')">✕</button>
+
+      <button
+        class="close"
+        data-close="customOverlay"
+      >
+        ×
+      </button>
+
     </div>
 
-    <input id="customName" class="customInput" style="min-height:auto;margin-bottom:10px"
-      placeholder="Text name">
+    <input
+      id="customName"
+      class="modal-input"
+      placeholder="Text name"
+    >
 
-    <textarea id="customText" class="customInput"
-      placeholder="Write or paste your own typing text here..."></textarea>
+    <div style="height:8px"></div>
 
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
-      <button class="btn primary" onclick="saveCustom()">Save text</button>
+    <textarea
+      id="customText"
+      class="modal-textarea"
+      placeholder="Write your own text..."
+    ></textarea>
+
+    <div class="custom-actions">
+
+      <button
+        id="saveCustom"
+        class="primary"
+      >
+        save text
+      </button>
+
+      <button
+        id="clearCustom"
+        class="small-btn"
+      >
+        clear
+      </button>
+
     </div>
 
-    <div id="customList" class="customList"></div>
+    <div
+      id="customList"
+      class="custom-list"
+    ></div>
+
   </div>
-</div>
 
-
-<!-- HISTORY -->
-<div id="historyModal" class="modal">
-  <div class="modalBox">
-
-    <div class="modalHead">
-      <h3>History</h3>
-      <button class="close" onclick="closeModal('historyModal')">✕</button>
-    </div>
-
-    <div id="historyList" class="historyList"></div>
-
-  </div>
 </div>
 
 
 <script>
-"use strict";
 
-/* =========================
-   DATA
-========================= */
+const TEXTS = {
 
-const texts = {
-  "en-US":
-    "The quick brown fox jumps over the lazy dog. Practice typing every day to improve your speed accuracy and confidence. Keep your hands relaxed and focus on the screen instead of looking at the keyboard. Small improvements become great results when you stay consistent. ",
+  "en-US":[
+    "the","of","and","to","in","a","is","that","for","it",
+    "as","was","with","be","by","on","not","he","i","this",
+    "are","or","his","from","at","which","but","have","an",
+    "had","they","you","were","their","one","all","we","can",
+    "her","has","there","been","if","more","when","will",
+    "would","who","so","what","up","about","out","how","get",
+    "go","me","make","like","time","just","know","take",
+    "people","into","year","your","good","some","could",
+    "them","see","other","than","then","now","look","only",
+    "come","its","over","think","also","back","after","use",
+    "two","our","work","first","well","way","even","new",
+    "want","because","these","give","day"
+  ],
 
-  "uz-UZ":
-    "Bugun tez va aniq yozishni mashq qilamiz. Klaviaturaga qaramasdan yozish uchun muntazam mashq qilish kerak. Har kuni ozgina vaqt ajratsangiz tezlik va aniqlik asta-sekin yaxshilanadi. Eng muhimi xatolarga e'tibor berish va to'g'ri yozishga odatlanishdir. ",
+  "uz-UZ":[
+    "bu","va","ham","uchun","bilan","bir","bor","deb","edi",
+    "men","sen","u","biz","ular","emas","keladi","qiladi",
+    "kerak","mumkin","yaxshi","katta","kichik","yangi","eski",
+    "kun","vaqt","inson","maktab","kitob","uy","ish","hayot",
+    "dunyo","til","so‘z","fikr","bilim","olish","berish",
+    "ko‘rish","yozish","o‘qish","o‘rganish","har","qanday",
+    "keyin","oldin","hozir","yana","juda","eng","ko‘p","kam",
+    "hamma","boshqa","birinchi","muhim","tez","aniq","to‘g‘ri",
+    "oddiy","qiziqarli","kelajak","maqsad"
+  ],
 
-  "ru-RU":
-    "Сегодня мы тренируем скорость и точность печати. Чтобы научиться печатать не глядя на клавиатуру, нужно регулярно практиковаться. Каждый день уделяйте немного времени тренировке и постепенно ваша скорость станет выше. Главное сохранять внимание и спокойствие. ",
+  "ru-RU":[
+    "и","в","не","на","я","что","он","с","а","как",
+    "это","по","но","мы","из","за","у","к","о","же",
+    "быть","был","она","они","мне","для","ты","от","так",
+    "его","все","тот","этот","мог","если","уже","есть",
+    "можно","нужно","будет","когда","только","такой",
+    "чтобы","свой","который","человек","время","год","день",
+    "дом","работа","школа","книга","мир","новый","большой",
+    "маленький","хороший","быстро","точно","важный","знание",
+    "учиться","читать","писать","работать","думать","говорить"
+  ],
 
-  "ko-KR":
-    "오늘은 타이핑 연습을 하기에 좋은 날입니다. 키보드를 보지 않고 정확하게 입력하려면 꾸준한 연습이 필요합니다. 매일 조금씩 연습하면 속도와 정확도가 함께 좋아질 수 있습니다. 집중하고 편안한 자세로 천천히 시작해 보세요. "
+  "ko-KR":[
+    "오늘","나는","너는","우리","사람","시간","하루","학교",
+    "공부","책","컴퓨터","키보드","연습","속도","정확도",
+    "좋은","새로운","작은","큰","많은","모든","그리고",
+    "하지만","그래서","정말","매우","이것","저것","그것",
+    "여기","저기","지금","내일","어제","매일","함께",
+    "천천히","빠르게","배우다","읽다","쓰다","말하다",
+    "생각하다","만들다","하다","가다","오다","보다","알다",
+    "원하다","필요하다","중요하다","시작","연습하다",
+    "공부하다","미래","목표","좋아요"
+  ]
+
 };
 
-const LANG_NAME = {
-  "en-US":"English",
-  "uz-UZ":"Uzbek",
-  "ru-RU":"Russian",
-  "ko-KR":"Korean"
+
+const LANG_NAMES = {
+
+  "en-US":"english",
+  "uz-UZ":"uzbek",
+  "ru-RU":"russian",
+  "ko-KR":"korean"
+
 };
 
-let mode = "time";
-let language = "en-US";
 
-let timeLimit = 30;
-let wordLimit = 25;
+let state = {
 
-let sourceText = "";
-let words = [];
+  mode:"time",
 
-let started = false;
-let finished = false;
-let startTime = 0;
-let timerId = null;
+  limit:15,
 
-let voiceEnabled = false;
-let voiceTrainingEnabled = false;
+  language:"en-US",
 
-let customTexts = JSON.parse(localStorage.getItem("itype_custom") || "[]");
-let history = JSON.parse(localStorage.getItem("itype_history") || "[]");
+  source:"",
 
-let currentVoiceWord = 0;
-let voiceWordStarted = false;
-let voiceCorrectWords = 0;
+  started:false,
 
-const input = document.getElementById("hiddenInput");
-const typingText = document.getElementById("typingText");
-const voiceTraining = document.getElementById("voiceTraining");
-const voicePill = document.getElementById("voicePill");
+  finished:false,
+
+  start:0,
+
+  timer:null,
+
+  customActive:null
+
+};
 
 
-/* =========================
-   STARTUP
-========================= */
+const input =
+  document.getElementById("input");
 
-function init(){
-  loadSettings();
-  loadVoices();
-  prepare();
-  renderCustomList();
-  renderHistory();
+const typingText =
+  document.getElementById("typingText");
 
-  document.addEventListener("click", e => {
-    if(
-      !e.target.closest("button") &&
-      !e.target.closest("select") &&
-      !e.target.closest("textarea")
-    ){
-      focusInput();
-    }
-  });
+const wpm =
+  document.getElementById("wpm");
 
-  input.addEventListener("input", handleInput);
+const accuracy =
+  document.getElementById("accuracy");
 
-  input.addEventListener("keydown", handleKeyDown);
+const raw =
+  document.getElementById("raw");
 
-  input.addEventListener("paste", e => e.preventDefault());
-  input.addEventListener("copy", e => e.preventDefault());
-  input.addEventListener("cut", e => e.preventDefault());
-  input.addEventListener("drop", e => e.preventDefault());
+const errors =
+  document.getElementById("errors");
 
-  document.addEventListener("paste", e => {
-    if(document.activeElement === input) e.preventDefault();
-  });
+const time =
+  document.getElementById("time");
 
-  document.addEventListener("copy", e => {
-    if(document.activeElement === input) e.preventDefault();
-  });
+const chars =
+  document.getElementById("chars");
 
-  document.addEventListener("cut", e => {
-    if(document.activeElement === input) e.preventDefault();
-  });
+const languageLine =
+  document.getElementById("languageLine");
 
-  window.addEventListener("beforeunload", () => {
-    if(started && !finished){
-      // stop normal state; nothing is stored
-    }
-  });
 
-  if(window.speechSynthesis){
-    speechSynthesis.addEventListener("voiceschanged", loadVoices);
+/* ==========================
+   TEXT
+========================== */
+
+function randomWords(count){
+
+  const list =
+    TEXTS[state.language] ||
+    TEXTS["en-US"];
+
+  const result = [];
+
+  for(let i=0;i<count;i++){
+
+    result.push(
+      list[
+        Math.floor(
+          Math.random()*list.length
+        )
+      ]
+    );
+
   }
 
-  setupKeyboard();
+  return result.join(" ");
+
 }
 
-init();
 
+function buildSource(){
 
-/* =========================
-   PREPARE
-========================= */
+  if(state.customActive){
 
-function setMode(newMode){
-  if(started) return;
+    state.source =
+      state.customActive.text;
 
-  mode = newMode;
-
-  document.querySelectorAll(".control").forEach(btn => {
-    btn.classList.toggle("active", btn.dataset.mode === newMode);
-  });
-
-  if(newMode === "custom"){
-    openCustom();
     return;
+
   }
 
-  prepare();
-}
+  if(state.mode === "words"){
 
-function setLanguage(lang){
-  if(started) return;
+    state.source =
+      randomWords(state.limit);
 
-  language = lang;
-
-  document.querySelectorAll(".lang").forEach(btn => {
-    btn.classList.toggle("active", btn.dataset.lang === lang);
-  });
-
-  prepare();
-  loadVoices();
-}
-
-function prepare(){
-  stopTimer();
-  finished = false;
-  started = false;
-  startTime = 0;
-
-  currentVoiceWord = 0;
-  voiceWordStarted = false;
-  voiceCorrectWords = 0;
-
-  input.value = "";
-
-  sourceText = getSourceText();
-
-  if(mode === "time"){
-    timeLimit = Number(localStorage.getItem("itype_time") || 30);
-
-    if(sourceText.length < 700){
-      sourceText = makeLongText(sourceText);
-    }
-
-    document.getElementById("modeLabel").textContent = `${timeLimit} seconds`;
-  }
-
-  if(mode === "words"){
-    wordLimit = Number(localStorage.getItem("itype_words") || 25);
-
-    const baseWords = sourceText.trim().split(/\s+/);
-    let arr = [];
-
-    while(arr.length < wordLimit){
-      arr.push(...baseWords);
-    }
-
-    words = arr.slice(0, wordLimit);
-    sourceText = words.join(" ");
-
-    document.getElementById("modeLabel").textContent = `${wordLimit} words`;
-  }
-
-  if(mode === "custom"){
-    document.getElementById("modeLabel").textContent = "Custom text";
-  }
-
-  if(voiceTrainingEnabled){
-    words = sourceText.trim().split(/\s+/).filter(Boolean);
-    voiceTraining.classList.add("show");
-    typingText.style.display = "none";
-    showVoiceTraining();
   }else{
-    voiceTraining.classList.remove("show");
-    typingText.style.display = "block";
-    renderText("");
+
+    state.source =
+      randomWords(180);
+
   }
 
-  updateStats(0,0,0);
-  document.getElementById("status").textContent = "Click here and start typing";
-  updateTimeDisplay();
-  document.getElementById("progressFill").style.width = "0%";
-}
-
-function getSourceText(){
-  if(mode === "custom"){
-    const item = customTexts[0];
-
-    if(item && item.text){
-      return item.text;
-    }
-
-    return texts[language];
-  }
-
-  return texts[language];
-}
-
-function makeLongText(base){
-  let result = "";
-  while(result.length < 1100){
-    result += base;
-  }
-  return result;
 }
 
 
-/* =========================
-   INPUT
-========================= */
+/* ==========================
+   RENDER
+========================== */
 
-function focusInput(){
-  if(finished) return;
+function render(typed){
 
-  input.focus();
+  const sourceChars =
+    Array.from(state.source);
 
-  if(!started){
-    startTest();
-  }
-}
-
-function startTest(){
-  if(started || finished) return;
-
-  started = true;
-  startTime = performance.now();
-
-  document.getElementById("status").textContent =
-    voiceTrainingEnabled
-      ? "Listen carefully and type the spoken word"
-      : "Typing...";
-
-  if(voiceTrainingEnabled){
-    currentVoiceWord = 0;
-    voiceCorrectWords = 0;
-    voiceWordStarted = false;
-    input.value = "";
-
-    setTimeout(() => speakCurrentWord(), 120);
-  }
-
-  timerId = setInterval(tick, 100);
-}
-
-function handleKeyDown(e){
-
-  if(e.key === "Tab"){
-    e.preventDefault();
-    return;
-  }
-
-  if(e.ctrlKey || e.metaKey){
-    const blocked = ["c","v","x","a"];
-    if(blocked.includes(e.key.toLowerCase())){
-      e.preventDefault();
-      return;
-    }
-  }
-
-  highlightKey(e.key);
-}
-
-function handleInput(){
-
-  if(finished) return;
-
-  if(!started){
-    startTest();
-  }
-
-  const typed = input.value;
-
-  if(voiceTrainingEnabled){
-    handleVoiceTrainingInput(typed);
-    return;
-  }
-
-  renderText(typed);
-  updateProgress(typed);
-  calculateLiveStats(typed);
-
-  if(mode === "words"){
-    const count = typed.trim() ? typed.trim().split(/\s+/).length : 0;
-
-    if(count >= wordLimit){
-      finishTest();
-    }
-  }
-
-  if(mode === "custom" && typed.length >= sourceText.length){
-    finishTest();
-  }
-}
-
-
-/* =========================
-   NORMAL TYPING
-========================= */
-
-function renderText(typed){
-  const chars = Array.from(sourceText);
-  const typedChars = Array.from(typed);
+  const typedChars =
+    Array.from(typed);
 
   let html = "";
 
-  for(let i=0;i<chars.length;i++){
+  for(
+    let i=0;
+    i<sourceChars.length;
+    i++
+  ){
 
-    const ch = escapeHTML(chars[i]);
+    const char =
+      escapeHTML(sourceChars[i]);
 
     if(i < typedChars.length){
-      if(typedChars[i] === chars[i]){
-        html += `<span class="char correct">${ch}</span>`;
+
+      if(
+        typedChars[i] ===
+        sourceChars[i]
+      ){
+
+        html +=
+          `<span class="char correct">${char}</span>`;
+
       }else{
-        html += `<span class="char wrong">${ch}</span>`;
+
+        html +=
+          `<span class="char wrong">${char}</span>`;
+
       }
+
+    }else if(
+      i === typedChars.length
+    ){
+
+      html +=
+        `<span class="char current">${char}</span>`;
+
+    }else{
+
+      html +=
+        `<span class="char">${char}</span>`;
+
     }
-    else if(i === typedChars.length){
-      html += `<span class="char current">${ch}</span>`;
-    }
-    else{
-      html += `<span class="char">${ch}</span>`;
-    }
+
   }
 
-  typingText.innerHTML = html;
+  typingText.innerHTML =
+    html;
+
 }
 
-function calculateLiveStats(typed){
-  const source = Array.from(sourceText);
-  const entered = Array.from(typed);
+
+/* ==========================
+   STATS
+========================== */
+
+function resetStats(){
+
+  wpm.textContent = "0";
+
+  accuracy.textContent =
+    "100%";
+
+  raw.textContent = "0";
+
+  errors.textContent = "0";
+
+  chars.textContent =
+    "0/0/0";
+
+  time.textContent =
+    state.mode === "time"
+      ? formatTime(state.limit)
+      : "00:00";
+
+}
+
+
+function calculate(){
+
+  const typed =
+    Array.from(input.value);
+
+  const source =
+    Array.from(state.source);
 
   let correct = 0;
-  let errors = 0;
 
-  entered.forEach((char,i) => {
-    if(source[i] === char){
-      correct++;
-    }else{
-      errors++;
+  let errorCount = 0;
+
+  typed.forEach(
+    (char,index)=>{
+
+      if(
+        char === source[index]
+      ){
+
+        correct++;
+
+      }else{
+
+        errorCount++;
+
+      }
+
     }
-  });
+  );
 
-  const elapsed = Math.max((performance.now() - startTime)/60000, .0001);
 
-  const wpm = Math.round((correct/5)/elapsed);
-  const acc = entered.length
-    ? Math.max(0, Math.round((correct/entered.length)*100))
-    : 100;
+  const elapsed =
+    Math.max(
+      (performance.now()-state.start)/1000,
+      0.01
+    );
 
-  updateStats(wpm,acc,errors,correct);
+  const minutes =
+    elapsed/60;
+
+
+  const currentWpm =
+    Math.round(
+      (correct/5)/minutes
+    );
+
+
+  const currentRaw =
+    Math.round(
+      (typed.length/5)/minutes
+    );
+
+
+  const currentAccuracy =
+    typed.length === 0
+      ? 100
+      : Math.max(
+          0,
+          Math.round(
+            correct /
+            typed.length *
+            100
+          )
+        );
+
+
+  wpm.textContent =
+    currentWpm;
+
+  raw.textContent =
+    currentRaw;
+
+  accuracy.textContent =
+    currentAccuracy + "%";
+
+  errors.textContent =
+    errorCount;
+
+  chars.textContent =
+    `${correct}/${typed.length}/${errorCount}`;
+
+
+  return {
+
+    correct,
+
+    errors:errorCount,
+
+    wpm:currentWpm,
+
+    accuracy:currentAccuracy,
+
+    chars:typed.length,
+
+    elapsed
+
+  };
+
 }
 
-function updateProgress(typed){
-  const total = Math.max(sourceText.length,1);
-  const percent = Math.min((typed.length / total)*100,100);
-  document.getElementById("progressFill").style.width = percent + "%";
-}
 
-
-/* =========================
+/* ==========================
    TIMER
-========================= */
+========================== */
 
-function tick(){
+function startTimer(){
 
-  if(!started || finished) return;
+  clearInterval(state.timer);
 
-  const elapsed = (performance.now() - startTime)/1000;
+  state.timer =
+    setInterval(
 
-  if(mode === "time"){
-    const remaining = Math.max(timeLimit - elapsed,0);
+      ()=>{
 
-    document.getElementById("timeStat").textContent =
-      formatSeconds(remaining);
+        if(
+          !state.started ||
+          state.finished
+        ){
 
-    if(remaining <= 0){
-      finishTest();
-    }
+          return;
 
-  }else{
-    const current = Math.floor(elapsed);
-    document.getElementById("timeStat").textContent =
-      formatSeconds(current);
-  }
+        }
+
+
+        const elapsed =
+          (performance.now() -
+           state.start)/1000;
+
+
+        if(
+          state.mode === "time"
+        ){
+
+          const remaining =
+            Math.max(
+              state.limit-elapsed,
+              0
+            );
+
+          time.textContent =
+            formatTime(remaining);
+
+
+          if(
+            remaining <= 0
+          ){
+
+            finish();
+
+          }
+
+        }else{
+
+          time.textContent =
+            formatTime(elapsed);
+
+        }
+
+      },
+
+      100
+
+    );
 
 }
 
-function updateTimeDisplay(){
-
-  if(mode === "time"){
-    document.getElementById("timeStat").textContent =
-      formatSeconds(timeLimit);
-  }else{
-    document.getElementById("timeStat").textContent = "0";
-  }
-}
-
-function formatSeconds(sec){
-  sec = Math.max(0, Math.ceil(sec));
-
-  const m = Math.floor(sec/60);
-  const s = sec % 60;
-
-  return `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
-}
 
 function stopTimer(){
-  if(timerId){
-    clearInterval(timerId);
-    timerId = null;
-  }
-}
 
-
-/* =========================
-   FINISH
-========================= */
-
-function finishTest(){
-
-  if(finished) return;
-
-  finished = true;
-  stopTimer();
-
-  speechSynthesis?.cancel();
-
-  const typed = input.value;
-  const source = Array.from(sourceText);
-  const entered = Array.from(typed);
-
-  let correct = 0;
-  let errors = 0;
-
-  entered.forEach((char,i)=>{
-    if(source[i] === char) correct++;
-    else errors++;
-  });
-
-  const elapsedSeconds = mode === "time"
-    ? timeLimit
-    : Math.max((performance.now()-startTime)/1000,.1);
-
-  const minutes = Math.max(elapsedSeconds/60,.0001);
-
-  const wpm = Math.round((correct/5)/minutes);
-  const acc = entered.length
-    ? Math.max(0,Math.round((correct/entered.length)*100))
-    : 100;
-
-  document.getElementById("resultWpm").textContent = wpm;
-  document.getElementById("resultAccuracy").textContent = acc + "%";
-  document.getElementById("resultCorrect").textContent = correct;
-  document.getElementById("resultErrors").textContent = errors;
-  document.getElementById("resultChars").textContent = entered.length;
-
-  document.getElementById("status").textContent = "Completed";
-  saveHistory(wpm,acc,correct,errors,entered.length);
-
-  openModal("resultModal");
-}
-
-
-/* =========================
-   STATS
-========================= */
-
-function updateStats(wpm,acc,errors,correct){
-  document.getElementById("wpm").textContent = wpm;
-  document.getElementById("accuracy").textContent = acc + "%";
-  document.getElementById("errors").textContent = errors;
-  document.getElementById("correct").textContent = correct;
-}
-
-
-/* =========================
-   VOICE
-========================= */
-
-function toggleVoice(){
-
-  voiceEnabled = !voiceEnabled;
-
-  voicePill.classList.toggle("on", voiceEnabled);
-  voicePill.textContent = voiceEnabled
-    ? "🔊 Voice On"
-    : "🔇 Voice Off";
-
-  if(voiceEnabled && started && voiceTrainingEnabled){
-    speakCurrentWord();
-  }else if(!voiceEnabled){
-    speechSynthesis?.cancel();
-  }
-}
-
-function loadVoices(){
-
-  if(!window.speechSynthesis) return;
-
-  const voices = speechSynthesis.getVoices();
-
-  const select = document.getElementById("voiceSelect");
-
-  const filtered = voices.filter(v =>
-    v.lang.toLowerCase().startsWith(language.toLowerCase().slice(0,2))
+  clearInterval(
+    state.timer
   );
 
-  const available = filtered.length ? filtered : voices;
+  state.timer = null;
 
-  const old = select.value;
-
-  select.innerHTML = "";
-
-  available.forEach((voice,i)=>{
-    const option = document.createElement("option");
-    option.value = voice.name;
-    option.textContent = `${voice.name} — ${voice.lang}`;
-    select.appendChild(option);
-  });
-
-  if([...select.options].some(o=>o.value === old)){
-    select.value = old;
-  }
-}
-
-function getSelectedVoice(){
-
-  const voices = speechSynthesis.getVoices();
-
-  const wanted = document.getElementById("voiceSelect").value;
-
-  return (
-    voices.find(v=>v.name === wanted) ||
-    voices.find(v=>v.lang.toLowerCase().startsWith(language.slice(0,2).toLowerCase())) ||
-    voices[0] ||
-    null
-  );
-}
-
-function speak(text){
-
-  if(!window.speechSynthesis || !voiceEnabled || !text) return;
-
-  speechSynthesis.cancel();
-
-  const utter = new SpeechSynthesisUtterance(text);
-  utter.lang = language;
-  utter.rate = Number(document.getElementById("voiceRate").value);
-  utter.volume = Number(document.getElementById("voiceVolume").value);
-
-  const voice = getSelectedVoice();
-
-  if(voice){
-    utter.voice = voice;
-    utter.lang = voice.lang;
-  }
-
-  speechSynthesis.speak(utter);
 }
 
 
-/* =========================
-   VOICE TRAINING
-========================= */
+/* ==========================
+   INPUT
+========================== */
 
-function toggleVoiceTraining(){
+input.addEventListener(
+  "input",
+  ()=>{
 
-  voiceTrainingEnabled = !voiceTrainingEnabled;
-
-  document
-    .getElementById("voiceTrainingSwitch")
-    .classList.toggle("on",voiceTrainingEnabled);
-
-  localStorage.setItem(
-    "itype_voice_training",
-    voiceTrainingEnabled ? "1" : "0"
-  );
-
-  restart();
-}
-
-function showVoiceTraining(){
-
-  const total = words.length || 1;
-  const current = Math.min(currentVoiceWord+1,total);
-
-  document.getElementById("voiceWordIndex").textContent =
-    `Word ${current} / ${total}`;
-
-  document.getElementById("voiceHint").textContent =
-    voiceWordStarted
-      ? "Type the word you heard"
-      : "Listen carefully";
-}
-
-function speakCurrentWord(){
-
-  if(!started || finished || !voiceTrainingEnabled) return;
-  if(currentVoiceWord >= words.length){
-    finishVoiceTraining();
-    return;
-  }
-
-  const word = words[currentVoiceWord];
-
-  input.value = "";
-  voiceWordStarted = true;
-
-  showVoiceTraining();
-  speak(word);
-}
-
-function handleVoiceTrainingInput(typed){
-
-  const target = words[currentVoiceWord] || "";
-
-  // CRITICAL FIX:
-  // Next word NEVER starts until this word is exactly correct.
-  if(typed === target){
-
-    voiceCorrectWords++;
-    currentVoiceWord++;
-    voiceWordStarted = false;
-    input.value = "";
-
-    if(currentVoiceWord >= words.length){
-      finishVoiceTraining();
+    if(state.finished)
       return;
+
+
+    if(!state.started){
+
+      state.started = true;
+
+      state.start =
+        performance.now();
+
+      startTimer();
+
     }
 
-    document.getElementById("voiceWordIndex").textContent =
-      `Word ${currentVoiceWord+1} / ${words.length}`;
 
-    document.getElementById("voiceHint").textContent =
-      "Correct ✓ Next word...";
+    const typed =
+      input.value;
 
-    setTimeout(() => {
 
-      if(!finished && started && voiceTrainingEnabled){
-        speakCurrentWord();
+    render(typed);
+
+    calculate();
+
+
+    if(
+      state.mode === "words"
+    ){
+
+      const count =
+        typed
+          .trim()
+          .split(/\s+/)
+          .filter(Boolean)
+          .length;
+
+
+      if(
+        count >= state.limit
+      ){
+
+        finish();
+
+        return;
+
       }
 
-    },450);
+    }
 
-    return;
+
+    if(
+      state.mode === "time" &&
+      typed.length >
+      state.source.length - 100
+    ){
+
+      state.source +=
+        " " +
+        randomWords(60);
+
+      render(typed);
+
+    }
+
   }
+);
 
-  // Wrong word:
-  // DO NOT speak next word.
-  const targetChars = Array.from(target);
-  const typedChars = Array.from(typed);
 
-  let correct = 0;
-  typedChars.forEach((ch,i)=>{
-    if(ch === targetChars[i]) correct++;
-  });
+/* ==========================
+   FINISH
+========================== */
 
-  const elapsed = Math.max((performance.now()-startTime)/60000,.0001);
+function finish(){
 
-  const wpm = Math.round((voiceCorrectWords*1)/elapsed);
+  if(state.finished)
+    return;
 
-  const acc = typedChars.length
-    ? Math.round((correct/typedChars.length)*100)
-    : 100;
 
-  updateStats(wpm,acc,Math.max(0,typedChars.length-correct),correct);
+  state.finished = true;
 
-  document.getElementById("voiceHint").textContent =
-    "Not correct — fix this word";
+  state.started = false;
 
-  document.getElementById("voiceHint").style.color = "var(--wrong)";
-}
-
-function finishVoiceTraining(){
-
-  finished = true;
-  started = false;
   stopTimer();
-  speechSynthesis?.cancel();
 
-  const elapsedSeconds = Math.max((performance.now()-startTime)/1000,.1);
-  const minutes = elapsedSeconds/60;
 
-  const wpm = Math.round((voiceCorrectWords/Math.max(minutes,.001)));
-  const acc = words.length
-    ? Math.round((voiceCorrectWords/words.length)*100)
-    : 100;
+  const result =
+    calculate();
 
-  document.getElementById("resultWpm").textContent = wpm;
-  document.getElementById("resultAccuracy").textContent = acc + "%";
-  document.getElementById("resultCorrect").textContent = voiceCorrectWords;
-  document.getElementById("resultErrors").textContent = Math.max(words.length-voiceCorrectWords,0);
-  document.getElementById("resultChars").textContent = voiceCorrectWords;
 
-  saveHistory(
-    wpm,
-    acc,
-    voiceCorrectWords,
-    Math.max(words.length-voiceCorrectWords,0),
-    voiceCorrectWords
-  );
+  document.getElementById(
+    "resultWpm"
+  ).textContent =
+    result.wpm;
 
-  openModal("resultModal");
+
+  document.getElementById(
+    "resultAcc"
+  ).textContent =
+    result.accuracy + "%";
+
+
+  document.getElementById(
+    "resultErrors"
+  ).textContent =
+    result.errors;
+
+
+  document.getElementById(
+    "resultChars"
+  ).textContent =
+    result.chars;
+
+
+  document
+    .getElementById(
+      "resultOverlay"
+    )
+    .classList.add("show");
+
 }
 
 
-/* =========================
+/* ==========================
    RESTART
-========================= */
+========================== */
 
 function restart(){
 
   stopTimer();
-  speechSynthesis?.cancel();
 
-  finished = false;
-  started = false;
-  startTime = 0;
+  state.started = false;
 
-  currentVoiceWord = 0;
-  voiceCorrectWords = 0;
-  voiceWordStarted = false;
+  state.finished = false;
+
+  state.start = 0;
 
   input.value = "";
 
-  prepare();
+  resetStats();
+
+  buildSource();
+
+  render("");
+
+  document
+    .getElementById(
+      "resultOverlay"
+    )
+    .classList.remove("show");
 
   focusInput();
+
 }
 
 
-/* =========================
+/* ==========================
+   LANGUAGE
+========================== */
+
+document
+  .querySelectorAll("[data-lang]")
+  .forEach(
+
+    button => {
+
+      button.addEventListener(
+        "click",
+        ()=>{
+
+          if(state.started)
+            return;
+
+
+          state.language =
+            button.dataset.lang;
+
+
+          state.customActive =
+            null;
+
+
+          document
+            .querySelectorAll(
+              "[data-lang]"
+            )
+            .forEach(
+              b =>
+                b.classList.remove(
+                  "active"
+                )
+            );
+
+
+          button.classList.add(
+            "active"
+          );
+
+
+          languageLine.textContent =
+            LANG_NAMES[
+              state.language
+            ];
+
+
+          restart();
+
+        }
+      );
+
+    }
+
+  );
+
+
+/* ==========================
+   TIME
+========================== */
+
+document
+  .querySelectorAll("[data-time]")
+  .forEach(
+
+    button=>{
+
+      button.addEventListener(
+        "click",
+        ()=>{
+
+          if(state.started)
+            return;
+
+
+          state.mode = "time";
+
+          state.limit =
+            Number(
+              button.dataset.time
+            );
+
+
+          state.customActive =
+            null;
+
+
+          document
+            .querySelectorAll(
+              "[data-time]"
+            )
+            .forEach(
+              b =>
+                b.classList.remove(
+                  "active"
+                )
+            );
+
+
+          document
+            .querySelectorAll(
+              "[data-words]"
+            )
+            .forEach(
+              b =>
+                b.classList.remove(
+                  "active"
+                )
+            );
+
+
+          button.classList.add(
+            "active"
+          );
+
+
+          restart();
+
+        }
+      );
+
+    }
+
+  );
+
+
+/* ==========================
+   WORDS
+========================== */
+
+document
+  .querySelectorAll("[data-words]")
+  .forEach(
+
+    button=>{
+
+      button.addEventListener(
+        "click",
+        ()=>{
+
+          if(state.started)
+            return;
+
+
+          state.mode =
+            "words";
+
+
+          state.limit =
+            Number(
+              button.dataset.words
+            );
+
+
+          state.customActive =
+            null;
+
+
+          document
+            .querySelectorAll(
+              "[data-words]"
+            )
+            .forEach(
+              b =>
+                b.classList.remove(
+                  "active"
+                )
+            );
+
+
+          document
+            .querySelectorAll(
+              "[data-time]"
+            )
+            .forEach(
+              b =>
+                b.classList.remove(
+                  "active"
+                )
+            );
+
+
+          button.classList.add(
+            "active"
+          );
+
+
+          restart();
+
+        }
+      );
+
+    }
+
+  );
+
+
+/* ==========================
    KEYBOARD
-========================= */
+========================== */
 
-function toggleKeyboard(){
-  document.getElementById("keyboard").classList.toggle("show");
-}
+document
+  .querySelectorAll(".key")
+  .forEach(
 
-function setupKeyboard(){
+    key=>{
 
-  document.querySelectorAll(".key").forEach(key=>{
+      key.addEventListener(
+        "mousedown",
+        e=>{
 
-    key.addEventListener("mousedown", e=>{
-      e.preventDefault();
+          e.preventDefault();
 
-      const value = key.dataset.key;
 
-      if(value === " "){
-        input.value += " ";
-      }else{
-        input.value += value;
-      }
+          const value =
+            key.dataset.key;
 
-      handleInput();
-      focusInput();
-    });
 
-  });
-}
+          if(value === "Backspace"){
+
+            input.value =
+              input.value.slice(
+                0,
+                -1
+              );
+
+          }else if(
+            value === "Enter"
+          ){
+
+            input.value += "\n";
+
+          }else{
+
+            input.value +=
+              value;
+
+          }
+
+
+          input.dispatchEvent(
+            new Event(
+              "input",
+              {bubbles:true}
+            )
+          );
+
+
+          highlightKey(value);
+
+          focusInput();
+
+        }
+      );
+
+    }
+
+  );
+
 
 function highlightKey(key){
 
-  const lower = key.length === 1 ? key.toLowerCase() : key;
+  const target =
+    key === " "
+      ? " "
+      : key.toLowerCase();
 
-  document.querySelectorAll(".key").forEach(k=>{
-    k.classList.remove("active");
-  });
 
-  const found = document.querySelector(`[data-key="${cssEscape(lower)}"]`);
+  document
+    .querySelectorAll(".key")
+    .forEach(
+      k => {
 
-  if(found){
-    found.classList.add("active");
+        if(
+          k.dataset.key === target
+        ){
 
-    setTimeout(()=>{
-      found.classList.remove("active");
-    },110);
+          k.classList.add(
+            "active"
+          );
+
+
+          setTimeout(
+            ()=>{
+              k.classList.remove(
+                "active"
+              );
+            },
+            90
+          );
+
+        }
+
+      }
+    );
+
+}
+
+
+/* ==========================
+   KEYBOARD EVENTS
+========================== */
+
+document.addEventListener(
+  "keydown",
+  e=>{
+
+    if(
+      e.ctrlKey ||
+      e.metaKey
+    ){
+
+      const key =
+        e.key.toLowerCase();
+
+
+      if(
+        key === "c" ||
+        key === "v" ||
+        key === "x" ||
+        key === "a"
+      ){
+
+        e.preventDefault();
+
+      }
+
+    }
+
+
+    if(e.key === "Tab"){
+
+      e.preventDefault();
+
+    }
+
+
+    highlightKey(e.key);
+
   }
-}
+);
 
 
-/* =========================
-   CUSTOM
-========================= */
+/* ==========================
+   CLIPBOARD BLOCK
+========================== */
 
-function openCustom(){
-  renderCustomList();
-  openModal("customModal");
-}
+[
+  "copy",
+  "cut",
+  "paste",
+  "drop"
+].forEach(
+  type=>{
 
-function saveCustom(){
+    input.addEventListener(
+      type,
+      e=>{
+        e.preventDefault();
+      }
+    );
 
-  const name = document.getElementById("customName").value.trim();
-  const text = document.getElementById("customText").value.trim();
+  }
+);
 
-  if(!name || !text){
-    alert("Name and text are required.");
-    return;
+
+/* ==========================
+   CUSTOM TEXT
+========================== */
+
+function getCustomTexts(){
+
+  try{
+
+    return JSON.parse(
+      localStorage.getItem(
+        "itype-customs"
+      ) || "[]"
+    );
+
+  }catch{
+
+    return [];
+
   }
 
-  customTexts.push({
-    id: Date.now(),
-    name,
-    text
-  });
-
-  localStorage.setItem("itype_custom",JSON.stringify(customTexts));
-
-  document.getElementById("customName").value = "";
-  document.getElementById("customText").value = "";
-
-  renderCustomList();
 }
+
+
+function saveCustomTexts(list){
+
+  localStorage.setItem(
+    "itype-customs",
+    JSON.stringify(list)
+  );
+
+}
+
 
 function renderCustomList(){
 
-  const box = document.getElementById("customList");
+  const list =
+    getCustomTexts();
 
-  if(!customTexts.length){
-    box.innerHTML = `<div class="empty">No custom texts saved yet.</div>`;
+
+  if(!list.length){
+
+    document.getElementById(
+      "customList"
+    ).innerHTML =
+      `<div class="empty">
+        No custom texts yet.
+      </div>`;
+
     return;
+
   }
 
-  box.innerHTML = customTexts.map(item=>`
-    <div class="customItem">
-      <div>
-        <strong>${escapeHTML(item.name)}</strong>
-        <div class="historyMeta">${escapeHTML(item.text.slice(0,70))}${item.text.length>70?"...":""}</div>
-      </div>
 
-      <div style="display:flex;gap:7px">
-        <button class="btn" onclick="useCustom(${item.id})">Use</button>
-        <button class="btn" onclick="deleteCustom(${item.id})">Delete</button>
-      </div>
-    </div>
-  `).join("");
-}
+  document.getElementById(
+    "customList"
+  ).innerHTML =
 
-function useCustom(id){
+    list.map(
+      item => `
 
-  const item = customTexts.find(x=>x.id===id);
+        <div class="custom-item">
 
-  if(!item) return;
+          <div>
 
-  mode = "custom";
-  sourceText = item.text;
+            <strong>
+              ${escapeHTML(item.name)}
+            </strong>
 
-  document.querySelectorAll(".control").forEach(btn=>{
-    btn.classList.toggle("active",btn.dataset.mode==="custom");
-  });
+            <div class="custom-meta">
 
-  closeModal("customModal");
+              ${escapeHTML(
+                item.text.slice(0,70)
+              )}
 
-  prepare();
+              ${
+                item.text.length > 70
+                  ? "…"
+                  : ""
+              }
 
-  sourceText = item.text;
+            </div>
 
-  if(voiceTrainingEnabled){
-    words = sourceText.trim().split(/\s+/).filter(Boolean);
-    currentVoiceWord = 0;
-    showVoiceTraining();
-  }else{
-    renderText("");
-  }
+          </div>
 
-  focusInput();
-}
+          <div style="display:flex;gap:8px">
 
-function deleteCustom(id){
+            <button
+              class="small-btn"
+              data-use="${item.id}"
+            >
+              use
+            </button>
 
-  customTexts = customTexts.filter(x=>x.id!==id);
+            <button
+              class="small-btn"
+              data-delete="${item.id}"
+            >
+              delete
+            </button>
 
-  localStorage.setItem("itype_custom",JSON.stringify(customTexts));
+          </div>
 
-  renderCustomList();
-}
+        </div>
 
+      `
+    ).join("");
 
-/* =========================
-   HISTORY
-========================= */
-
-function saveHistory(wpm,acc,correct,errors,chars){
-
-  history.unshift({
-    id:Date.now(),
-    wpm,
-    acc,
-    correct,
-    errors,
-    chars,
-    language,
-    mode,
-    date:new Date().toLocaleString()
-  });
-
-  history = history.slice(0,50);
-
-  localStorage.setItem("itype_history",JSON.stringify(history));
-
-  renderHistory();
-}
-
-function openHistory(){
-  renderHistory();
-  openModal("historyModal");
-}
-
-function renderHistory(){
-
-  const box = document.getElementById("historyList");
-
-  if(!history.length){
-    box.innerHTML = `<div class="empty">No tests yet.</div>`;
-    return;
-  }
-
-  box.innerHTML = history.map(item=>`
-    <div class="historyItem">
-      <div>
-        <strong>${LANG_NAME[item.language] || item.language}</strong>
-        <div class="historyMeta">${item.date}</div>
-      </div>
-
-      <div>
-        <strong>${item.wpm} WPM</strong>
-        <div class="historyMeta">${item.mode}</div>
-      </div>
-
-      <div>
-        <strong>${item.acc}%</strong>
-        <div class="historyMeta">${item.errors} errors</div>
-      </div>
-    </div>
-  `).join("");
-}
-
-
-/* =========================
-   SETTINGS
-========================= */
-
-function openSettings(){
-  loadVoices();
-  openModal("settingsModal");
-}
-
-function loadSettings(){
-
-  const savedVoiceTraining =
-    localStorage.getItem("itype_voice_training");
-
-  voiceTrainingEnabled = savedVoiceTraining === "1";
 
   document
-    .getElementById("voiceTrainingSwitch")
-    .classList.toggle("on",voiceTrainingEnabled);
+    .querySelectorAll(
+      "[data-use]"
+    )
+    .forEach(
 
-  const savedTheme =
-    localStorage.getItem("itype_theme") || "dark";
+      button=>{
 
-  applyTheme(savedTheme);
+        button.addEventListener(
+          "click",
+          ()=>{
 
-  document.getElementById("themeSelect").value = savedTheme;
+            const item =
+              getCustomTexts()
+                .find(
+                  x =>
+                    x.id ===
+                    Number(
+                      button.dataset.use
+                    )
+                );
 
-  document.getElementById("voiceRate").value =
-    localStorage.getItem("itype_rate") || "1";
 
-  document.getElementById("voiceVolume").value =
-    localStorage.getItem("itype_volume") || "1";
+            if(!item)
+              return;
 
-  document.getElementById("voiceRate").addEventListener("input",e=>{
-    localStorage.setItem("itype_rate",e.target.value);
-  });
 
-  document.getElementById("voiceVolume").addEventListener("input",e=>{
-    localStorage.setItem("itype_volume",e.target.value);
-  });
+            state.customActive =
+              item;
+
+
+            state.mode =
+              "custom";
+
+
+            restart();
+
+
+            document
+              .getElementById(
+                "customOverlay"
+              )
+              .classList.remove(
+                "show"
+              );
+
+          }
+        );
+
+      }
+
+    );
+
+
+  document
+    .querySelectorAll(
+      "[data-delete]"
+    )
+    .forEach(
+
+      button=>{
+
+        button.addEventListener(
+          "click",
+          ()=>{
+
+            const newList =
+              getCustomTexts()
+                .filter(
+                  x =>
+                    x.id !==
+                    Number(
+                      button.dataset.delete
+                    )
+                );
+
+
+            saveCustomTexts(
+              newList
+            );
+
+
+            renderCustomList();
+
+          }
+        );
+
+      }
+
+    );
+
 }
 
-function applyTheme(theme){
 
-  document.body.classList.toggle("light",theme==="light");
+/* OPEN CUSTOM */
 
-  localStorage.setItem("itype_theme",theme);
-}
+document
+  .getElementById(
+    "customBtn"
+  )
+  .addEventListener(
+    "click",
+    ()=>{
+
+      renderCustomList();
+
+      document
+        .getElementById(
+          "customOverlay"
+        )
+        .classList.add(
+          "show"
+        );
+
+    }
+  );
 
 
-/* =========================
-   MODALS
-========================= */
+/* SAVE CUSTOM */
 
-function openModal(id){
-  document.getElementById(id).classList.add("show");
-}
+document
+  .getElementById(
+    "saveCustom"
+  )
+  .addEventListener(
+    "click",
+    ()=>{
 
-function closeModal(id){
-  document.getElementById(id).classList.remove("show");
-}
+      const name =
+        document
+          .getElementById(
+            "customName"
+          )
+          .value
+          .trim() ||
+        "My text";
 
-document.querySelectorAll(".modal").forEach(modal=>{
 
-  modal.addEventListener("click",e=>{
+      const text =
+        document
+          .getElementById(
+            "customText"
+          )
+          .value
+          .trim();
 
-    if(e.target === modal){
-      modal.classList.remove("show");
+
+      if(!text){
+
+        document
+          .getElementById(
+            "customText"
+          )
+          .focus();
+
+        return;
+
+      }
+
+
+      const list =
+        getCustomTexts();
+
+
+      list.unshift({
+
+        id:Date.now(),
+
+        name,
+
+        text
+
+      });
+
+
+      saveCustomTexts(
+        list.slice(0,50)
+      );
+
+
+      document
+        .getElementById(
+          "customName"
+        )
+        .value = "";
+
+
+      document
+        .getElementById(
+          "customText"
+        )
+        .value = "";
+
+
+      renderCustomList();
+
+    }
+  );
+
+
+/* CLEAR CUSTOM FORM */
+
+document
+  .getElementById(
+    "clearCustom"
+  )
+  .addEventListener(
+    "click",
+    ()=>{
+
+      document
+        .getElementById(
+          "customName"
+        )
+        .value = "";
+
+
+      document
+        .getElementById(
+          "customText"
+        )
+        .value = "";
+
+    }
+  );
+
+
+/* ==========================
+   MODAL CLOSE
+========================== */
+
+document
+  .querySelectorAll(
+    "[data-close]"
+  )
+  .forEach(
+
+    button=>{
+
+      button.addEventListener(
+        "click",
+        ()=>{
+
+          document
+            .getElementById(
+              button.dataset.close
+            )
+            .classList.remove(
+              "show"
+            );
+
+        }
+      );
+
     }
 
-  });
-
-});
+  );
 
 
-/* =========================
+document
+  .querySelectorAll(
+    ".overlay"
+  )
+  .forEach(
+
+    overlay=>{
+
+      overlay.addEventListener(
+        "click",
+        e=>{
+
+          if(
+            e.target === overlay
+          ){
+
+            overlay.classList.remove(
+              "show"
+            );
+
+          }
+
+        }
+      );
+
+    }
+
+  );
+
+
+/* ==========================
+   THEME
+========================== */
+
+document
+  .getElementById(
+    "themeBtn"
+  )
+  .addEventListener(
+    "click",
+    ()=>{
+
+      document.body
+        .classList.toggle(
+          "light"
+        );
+
+
+      localStorage.setItem(
+        "itype-theme",
+        document.body.classList.contains(
+          "light"
+        )
+          ? "light"
+          : "dark"
+      );
+
+    }
+  );
+
+
+if(
+  localStorage.getItem(
+    "itype-theme"
+  ) === "light"
+){
+
+  document.body
+    .classList.add(
+      "light"
+    );
+
+}
+
+
+/* ==========================
+   ESCAPE
+========================== */
+
+document.addEventListener(
+  "keydown",
+  e=>{
+
+    if(
+      e.key === "Escape"
+    ){
+
+      document
+        .querySelectorAll(
+          ".overlay.show"
+        )
+        .forEach(
+          overlay =>
+            overlay.classList.remove(
+              "show"
+            )
+        );
+
+    }
+
+  }
+);
+
+
+/* ==========================
+   FOCUS
+========================== */
+
+function focusInput(){
+
+  if(!state.finished){
+
+    input.focus();
+
+  }
+
+}
+
+
+document.addEventListener(
+  "click",
+  e=>{
+
+    if(
+      !e.target.closest(
+        "button,.modal"
+      )
+    ){
+
+      focusInput();
+
+    }
+
+  }
+);
+
+
+/* ==========================
    HELPERS
-========================= */
+========================== */
 
-function escapeHTML(str){
-  return String(str)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+function formatTime(seconds){
+
+  const total =
+    Math.ceil(
+      Math.max(
+        seconds,
+        0
+      )
+    );
+
+
+  const minutes =
+    Math.floor(
+      total/60
+    );
+
+
+  const secondsPart =
+    total % 60;
+
+
+  return (
+
+    String(minutes)
+      .padStart(2,"0")
+
+    + ":" +
+
+    String(secondsPart)
+      .padStart(2,"0")
+
+  );
+
 }
 
-function cssEscape(str){
-  if(window.CSS && CSS.escape){
-    return CSS.escape(str);
-  }
 
-  return str.replace(/([ #;?%&,.+*~':"!^$[\]()=>|\/@])/g,'\\$1');
+function escapeHTML(text){
+
+  return String(text)
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
+
 }
 
 
-/* =========================
-   CLICK OUTSIDE / RESTART
-========================= */
+/* ==========================
+   START
+========================== */
 
-document.addEventListener("keydown",e=>{
-
-  if(e.key === "Escape"){
-
-    document.querySelectorAll(".modal.show")
-      .forEach(modal=>modal.classList.remove("show"));
-
-  }
-
-  if(e.key === "Tab"){
-    e.preventDefault();
-  }
-
-});
-
-
-/* Keep input focused while typing */
-document.addEventListener("visibilitychange",()=>{
-
-  if(document.hidden && started && !finished){
-
-    /*
-      We intentionally do not destroy the test automatically here.
-      Browser anti-cheat cannot be made 100% foolproof in plain HTML.
-    */
-
-  }
-
-});
-
-
-/* =========================
-   DEFAULT SETTINGS
-========================= */
-
-document.getElementById("voiceRate").addEventListener("change",e=>{
-  localStorage.setItem("itype_rate",e.target.value);
-});
-
-document.getElementById("voiceVolume").addEventListener("change",e=>{
-  localStorage.setItem("itype_volume",e.target.value);
-});
-
-document.getElementById("voiceSelect").addEventListener("change",()=>{});
-
-
-/* =========================
-   FIXED TIME / WORD OPTIONS
-   Double-click Time or Words
-========================= */
-
-document.querySelector('[data-mode="time"]').addEventListener("dblclick",()=>{
-  const value = prompt("Time in seconds:", timeLimit);
-  const n = Number(value);
-
-  if(Number.isFinite(n) && n >= 5){
-    timeLimit = Math.floor(n);
-    localStorage.setItem("itype_time",timeLimit);
-    prepare();
-  }
-});
-
-document.querySelector('[data-mode="words"]').addEventListener("dblclick",()=>{
-  const value = prompt("Number of words:", wordLimit);
-  const n = Number(value);
-
-  if(Number.isFinite(n) && n >= 1){
-    wordLimit = Math.floor(n);
-    localStorage.setItem("itype_words",wordLimit);
-    prepare();
-  }
-});
-
-
-/* =========================
-   INITIAL VOICE LOAD
-========================= */
-
-setTimeout(loadVoices,200);
-setTimeout(loadVoices,1000);
+restart();
 
 </script>
 
